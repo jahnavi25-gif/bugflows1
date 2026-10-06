@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BugFlow — Issues Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+    <link rel="stylesheet" href="/static/IssuesDashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* =========================================================
+   BUGFLOW — DARK NEON FONT AWESOME ICON SYSTEM
+   Applies consistently to sidebar, buttons, cards and controls.
+========================================================= */
+:root {
+    --neon-cyan: #00f5ff;
+    --neon-blue: #4d7cff;
+    --neon-purple: #a855f7;
+    --neon-green: #00ff9d;
+    --icon-muted: #7f8da8;
+    --icon-bg: rgba(0, 245, 255, 0.07);
+}
+
+/* Base icon rendering */
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15em;
+    min-width: 1.15em;
+    line-height: 1;
+    vertical-align: middle;
+    color: var(--icon-muted);
+    filter: drop-shadow(0 0 0 transparent);
+    transition:
+        color .25s ease,
+        transform .25s cubic-bezier(.2,.8,.2,1),
+        filter .25s ease,
+        text-shadow .25s ease,
+        background .25s ease;
+}
+
+/* Brand / logo icons */
+.brand-logo .fa-solid,
+.brand-icon .fa-solid,
+.brand-mark .fa-solid {
+    color: var(--neon-cyan);
+    filter: drop-shadow(0 0 7px rgba(0,245,255,.65));
+    animation: neonIconPulse 2.8s ease-in-out infinite;
+}
+
+.brand-logo:hover .fa-solid,
+.brand-icon:hover .fa-solid,
+.brand-mark:hover .fa-solid {
+    color: #fff;
+    transform: rotate(-8deg) scale(1.12);
+    filter: drop-shadow(0 0 8px var(--neon-cyan))
+            drop-shadow(0 0 18px rgba(0,245,255,.65));
+}
+
+/* Sidebar navigation icons */
+.nav-link .nav-icon,
+.nav-item .nav-icon,
+.menu-item > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+}
+
+.nav-link .nav-icon .fa-solid,
+.nav-item .nav-icon .fa-solid,
+.menu-item > span:first-child .fa-solid {
+    color: var(--icon-muted);
+    font-size: 1rem;
+}
+
+.nav-link:hover .fa-solid,
+.nav-item:hover .fa-solid,
+.menu-item:hover .fa-solid {
+    color: var(--neon-cyan);
+    transform: translateX(2px) scale(1.12);
+    filter: drop-shadow(0 0 6px rgba(0,245,255,.8));
+}
+
+.nav-link.active .fa-solid,
+.nav-item.active .fa-solid,
+.menu-item.active .fa-solid {
+    color: var(--neon-cyan);
+    filter: drop-shadow(0 0 5px rgba(0,245,255,.9))
+            drop-shadow(0 0 12px rgba(0,245,255,.35));
+    animation: activeIconGlow 1.8s ease-in-out infinite;
+}
+
+/* Icons used inside interactive controls */
+button .fa-solid,
+a .fa-solid,
+select + .fa-solid,
+.input-icon .fa-solid,
+.search-icon .fa-solid {
+    color: currentColor;
+}
+
+button:hover .fa-solid,
+a:hover .fa-solid {
+    transform: translateY(-1px) scale(1.08);
+    filter: drop-shadow(0 0 6px currentColor);
+}
+
+button:active .fa-solid,
+a:active .fa-solid {
+    transform: scale(.92);
+}
+
+/* Search / filter icons */
+.fa-magnifying-glass,
+.fa-filter,
+.fa-calendar-days,
+.fa-chevron-down {
+    color: #8fa3c7;
+}
+
+.search-box:hover .fa-magnifying-glass,
+.search-container:hover .fa-magnifying-glass,
+.filter-group:hover .fa-solid,
+.date-filter:hover .fa-calendar-days {
+    color: var(--neon-cyan);
+    filter: drop-shadow(0 0 6px rgba(0,245,255,.7));
+}
+
+/* Status / analytics icons */
+.fa-chart-column,
+.fa-chart-pie,
+.fa-chart-line,
+.fa-arrow-trend-up,
+.fa-list-check,
+.fa-ranking-star {
+    color: var(--neon-purple);
+    filter: drop-shadow(0 0 4px rgba(168,85,247,.4));
+}
+
+.fa-circle-check,
+.fa-check,
+.fa-circle-play,
+.fa-circle-dot {
+    color: var(--neon-green);
+}
+
+.fa-triangle-exclamation,
+.fa-circle-exclamation,
+.fa-bolt {
+    color: #ffd166;
+}
+
+.fa-xmark,
+.fa-trash,
+.fa-circle-xmark {
+    color: #ff4d7d;
+}
+
+/* Card icons get a neon glass treatment */
+.stat-card .fa-solid,
+.metric-card .fa-solid,
+.summary-card .fa-solid,
+.analytics-card .fa-solid,
+.card-icon .fa-solid {
+    border-radius: 12px;
+    padding: .65em;
+    background: linear-gradient(145deg, rgba(0,245,255,.09), rgba(168,85,247,.07));
+    box-shadow: inset 0 0 18px rgba(0,245,255,.035), 0 0 12px rgba(0,245,255,.04);
+}
+
+.stat-card:hover .fa-solid,
+.metric-card:hover .fa-solid,
+.summary-card:hover .fa-solid,
+.analytics-card:hover .fa-solid,
+.card-icon:hover .fa-solid {
+    transform: translateY(-3px) rotate(-3deg) scale(1.08);
+    color: #fff;
+    box-shadow: inset 0 0 18px rgba(0,245,255,.08),
+                0 0 10px rgba(0,245,255,.3),
+                0 0 24px rgba(168,85,247,.15);
+}
+
+/* Workflow-specific action icons */
+.fa-brain,
+.fa-robot,
+.fa-shield-halved,
+.fa-bullseye,
+.fa-users,
+.fa-rocket,
+.fa-ranking-star {
+    filter: drop-shadow(0 0 5px rgba(0,245,255,.38));
+}
+
+.fa-brain:hover,
+.fa-robot:hover,
+.fa-shield-halved:hover,
+.fa-bullseye:hover,
+.fa-users:hover,
+.fa-rocket:hover {
+    color: var(--neon-cyan);
+    transform: scale(1.15) rotate(4deg);
+    filter: drop-shadow(0 0 7px var(--neon-cyan))
+            drop-shadow(0 0 15px rgba(0,245,255,.5));
+}
+
+/* Icon-only controls */
+.icon-btn,
+.btn-icon,
+.action-icon {
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.icon-btn:hover,
+.btn-icon:hover,
+.action-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(0,245,255,.25), inset 0 0 10px rgba(0,245,255,.04);
+}
+
+.icon-btn:hover .fa-solid,
+.btn-icon:hover .fa-solid,
+.action-icon:hover .fa-solid {
+    color: var(--neon-cyan);
+    filter: drop-shadow(0 0 7px rgba(0,245,255,.9));
+}
+
+/* Smooth accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .fa-solid,
+    .fa-regular,
+    .fa-brands,
+    .brand-logo .fa-solid,
+    .brand-icon .fa-solid,
+    .brand-mark .fa-solid {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+@keyframes neonIconPulse {
+    0%, 100% { filter: drop-shadow(0 0 5px rgba(0,245,255,.45)); }
+    50% { filter: drop-shadow(0 0 10px rgba(0,245,255,.9)); }
+}
+
+@keyframes activeIconGlow {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(0,245,255,.65)); }
+    50% { filter: drop-shadow(0 0 10px rgba(0,245,255,1)); }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark"><i class="fa-solid fa-bug"></i></div>
+
+            <div>
+                <strong>BugFlow</strong>
+                <span>Issue Tracker</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <div class="nav-label">MAIN</div>
+
+            <a class="nav-item active" href="/IssuesDashboard">
+                <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-item" href="/Issues">
+                <span class="nav-icon"><i class="fa-solid fa-list"></i></span>
+                <span>Issues</span>
+            </a>
+
+            <a class="nav-item" href="/IssuesBoard">
+                <span class="nav-icon"><i class="fa-solid fa-table-columns"></i></span>
+                <span>Issues Board</span>
+            </a>
+
+            <a class="nav-item" href="/Analytics">
+                <span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span>
+                <span>Analytics</span>
+            </a>
+
+            <a class="nav-item" href="/Workflow">
+                <span class="nav-icon"><i class="fa-solid fa-bolt"></i></span>
+                <span>Workflow</span>
+            </a>
+
+            <div class="nav-label system">
+                SYSTEM
+            </div>
+
+            <a class="nav-item" href="/Settings">
+                <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+                <span>Settings</span>
+            </a>
+
+            <button
+                class="nav-item logout"
+                id="logoutBtn"
+                type="button"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                <span>Logout</span>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                onclick="window.location.href='/Dashboard'"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-backward"></i></span>
+                <span>Back to Dashboard</span>
+            </button>
+
+        </nav>
+
+        <!-- User -->
+        <div class="profile">
+
+            <div
+                class="avatar"
+                id="profileAvatar"
+            >
+                JK
+            </div>
+
+            <div>
+                <strong id="profileName">
+                    Loading...
+                </strong>
+
+                <span id="profileRole">
+                    ...
+                </span>
+
+                <small>
+                    <i class="fa-solid fa-circle"></i> Online
+                </small>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="search-wrap">
+
+                <span class="search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    title="Notifications"
+                >
+                    <i class="fa-solid fa-bell"></i>
+                    <b id="notificationCount">
+                        3
+                    </b>
+                </button>
+
+                <button
+                    class="icon-btn"
+                    id="themeBtn"
+                    title="Toggle theme"
+                >
+                    ☾
+                </button>
+
+
+                <div class="date-filter">
+
+                    <span><i class="fa-solid fa-calendar-days"></i></span>
+
+                    <input
+                        id="startDate"
+                        type="date"
+                    >
+
+                    <span>–</span>
+
+                    <input
+                        id="endDate"
+                        type="date"
+                    >
+
+                    <button
+                        id="applyDate"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <section class="content">
+
+
+            <!-- HERO -->
+            <section class="hero">
+
+                <div>
+
+                    <h1>
+                        Welcome back,
+                        <em id="heroName">
+                            Jahnavi
+                        </em>
+                        ! <i class="fa-solid fa-hand"></i>
+                    </h1>
+
+                    <p>
+                        Here's what's happening with your projects today.
+                    </p>
+
+                </div>
+
+                <div class="hero-art">
+                    <span>&lt;/&gt;</span>
+                    <i><i class="fa-solid fa-bug"></i></i>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="cards">
+
+                <!-- TOTAL -->
+                <article class="stat-card pink">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+
+                    <span>
+                        Total Issues
+                    </span>
+
+                    <strong id="totalIssues">
+                        —
+                    </strong>
+
+                    <small id="totalDelta">
+                        Live from PostgreSQL
+                    </small>
+
+                    <div class="sparkline">
+                        <i></i>
+                    </div>
+
+                </article>
+
+
+                <!-- CREATED -->
+                <article class="stat-card blue">
+
+                    <div class="stat-icon">
+                        ✚
+                    </div>
+
+                    <span>
+                        Created Issues
+                    </span>
+
+                    <strong id="createdIssues">
+                        —
+                    </strong>
+
+                    <small>
+                        Selected period
+                    </small>
+
+                    <div class="sparkline">
+                        <i></i>
+                    </div>
+
+                </article>
+
+
+                <!-- RESOLVED -->
+                <article class="stat-card green">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <span>
+                        Resolved Issues
+                    </span>
+
+                    <strong id="resolvedIssues">
+                        —
+                    </strong>
+
+                    <small>
+                        Resolved + closed
+                    </small>
+
+                    <div class="sparkline">
+                        <i></i>
+                    </div>
+
+                </article>
+
+
+                <!-- IN PROGRESS -->
+                <article class="stat-card amber">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <span>
+                        In Progress
+                    </span>
+
+                    <strong id="progressIssues">
+                        —
+                    </strong>
+
+                    <small>
+                        Active workflow
+                    </small>
+
+                    <div class="sparkline">
+                        <i></i>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 CHARTS
+            ================================================== -->
+
+            <section class="grid-two">
+
+
+                <!-- ISSUE TREND -->
+                <article class="panel trend-panel">
+
+                    <div class="panel-head">
+
+                        <div>
+
+                            <h2>
+                                Issue Overview
+                            </h2>
+
+                            <p>
+                                Issues trend over time
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-box">
+
+                        <canvas
+                            id="trendChart"
+                        ></canvas>
+
+                    </div>
+
+                </article>
+
+
+                <!-- DISTRIBUTION -->
+                <article class="panel distribution-panel">
+
+                    <div class="panel-head">
+
+                        <div>
+
+                            <h2>
+                                Issue Distribution
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution">
+
+                        <div class="donut-wrap">
+
+                            <canvas
+                                id="distributionChart"
+                            ></canvas>
+
+                            <div class="donut-center">
+
+                                <strong id="donutTotal">
+                                    0
+                                </strong>
+
+                                <span>
+                                    Total Issues
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="distributionLegend"
+                            class="legend"
+                        >
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 RECENT ISSUES
+            ================================================== -->
+
+            <section class="panel recent">
+
+                <div class="panel-head">
+
+                    <div>
+
+                        <h2>
+                            Recent Issues
+                        </h2>
+
+                        <p>
+                            Latest issue updates from your team
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="text-btn"
+                        id="viewAllBtn"
+                        type="button"
+                    >
+                        View All
+                    </button>
+
+                </div>
+
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Project</th>
+                                <th>Priority</th>
+                                <th>Severity</th>
+                                <th>Status</th>
+                                <th>Assignee</th>
+                                <th>Updated</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="issuesBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="8"
+                                    class="empty"
+                                >
+                                    Loading issues...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         RIGHT SIDEBAR
+    ========================================================== -->
+
+    <aside class="rightbar">
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="quick panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h2>
+                        ⌁ Quick Actions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+                <button
+                    type="button"
+                    data-action="create"
+                    onclick="window.location.href='/Issues'"
+                >
+
+                    <span>✚</span>
+
+                    <strong>
+                        Create Issue
+                    </strong>
+
+                    <small>
+                        Report a new issue
+                    </small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    data-action="board"
+                    onclick="window.location.href='/IssuesBoard'"
+                >
+
+                    <span><i class="fa-solid fa-list"></i></span>
+
+                    <strong>
+                        View Board
+                    </strong>
+
+                    <small>
+                        Sprint board view
+                    </small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    data-action="analytics"
+                    onclick="window.location.href='/Analytics'"
+                >
+
+                    <span><i class="fa-solid fa-chart-column"></i></span>
+
+                    <strong>
+                        View Analytics
+                    </strong>
+
+                    <small>
+                        Check metrics
+                    </small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    data-action="workflow"
+                    onclick="window.location.href='/Workflow'"
+                >
+
+                    <span><i class="fa-solid fa-bolt"></i></span>
+
+                    <strong>
+                        Workflow
+                    </strong>
+
+                    <small>
+                        Agile workflow
+                    </small>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROMO -->
+        <section class="promo panel">
+
+            <div class="rocket">
+                <i class="fa-solid fa-rocket"></i>
+            </div>
+
+            <h2>
+                Better Software<br>
+                Faster Together
+            </h2>
+
+            <p>
+                Track issues, collaborate<br>
+                and ship great products.
+            </p>
+
+            <button
+                id="buildBtn"
+                type="button"
+            >
+                Let's Build <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+        </section>
+
+
+        <!-- TEAM ACTIVITY -->
+        <section class="activity panel">
+
+            <div class="panel-head">
+
+                <div>
+
+                    <h2>
+                        <i class="fa-solid fa-bolt"></i> Team Activity
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div id="activityList">
+
+                <div class="empty">
+                    Loading activity...
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+</div>
+
+
+<!-- TOAST -->
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script src="/static/IssuesDashboard.js"></script>
+
+</body>
+</html>

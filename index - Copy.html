@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>BugFlow - Issue Tracking</title>
+
+<link
+    rel="stylesheet"
+    href="/style.css"
+>
+
+<!-- Chart.js for dashboard graphs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+
+<div class="app-layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div>
+
+                <strong>
+                    BugFlow
+                </strong>
+
+                <span>
+                    Issue Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <nav class="sidebar-nav">
+
+
+            <p class="nav-label">
+                MAIN
+            </p>
+
+
+            <!-- OVERVIEW -->
+
+            <button
+                type="button"
+                class="nav-item active"
+                onclick="showPage('overview', this)"
+            >
+
+                <span class="nav-icon">
+                    <i class="fa-solid fa-house"></i>
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </button>
+
+
+
+            <!-- ISSUES -->
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="showPage('issues', this)"
+            >
+
+                <span class="nav-icon">
+                    <i class="fa-solid fa-bug"></i>
+                </span>
+
+                <span>
+                    Issues
+                </span>
+
+            </button>
+
+
+
+            <!-- SPRINT BOARD -->
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="showPage('board', this)"
+            >
+
+                <span class="nav-icon">
+                    <!-- Sprint Board -->
+                    <i class="fa-solid fa-list-check"></i>
+                </span>
+
+                <span>
+                    Sprint Board
+                </span>
+
+            </button>
+
+
+
+            <!-- ANALYTICS -->
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="showPage('analytics', this)"
+            >
+
+                <span class="nav-icon">
+                    <i class="fa-solid fa-chart-bar"></i>
+                </span>
+
+                <span>
+                    Analytics
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="showPage('milestone2', this)"
+            >
+                <span class="nav-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </span>
+                <span>Workflow</span>
+            </button>
+
+
+
+            <p class="nav-label">
+                SYSTEM
+            </p>
+
+
+
+            <!-- SETTINGS -->
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="showPage('settings', this)"
+            >
+
+                <span class="nav-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </span>
+
+                <span>
+                    Settings
+                </span>
+
+            </button>
+
+            <button
+                type="button"
+                class="nav-item"
+                onclick="logout()"
+            >
+
+                <span class="nav-icon">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+        </nav>
+
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+
+                    <strong id="sidebarUsername">
+                        User
+                    </strong>
+
+                    <span>
+                        BugFlow Member
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main class="container">
+
+    <!-- =====================================================
+         APP CONTENT
+    ====================================================== -->
+
+    <div class="app-content">
+
+
+
+    <!-- =========================================================
+        OVERVIEW / DASHBOARD
+    ========================================================= -->
+    <section
+        class="page-section bugflow-dashboard-page"
+        id="overviewPage"
+    >
+
+        <!-- TOP HEADER -->
+        <header class="bf-topbar">
+
+            <div class="bf-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="text"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+            </div>
+
+            <div class="bf-top-actions">
+
+                <button class="bf-icon-button notification-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot">3</span>
+                </button>
+
+                <button class="bf-icon-button">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <div class="bf-date-range">
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span id="dashboardDateRangeLabel">
+                        Select date range
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN DASHBOARD -->
+        <div class="bf-dashboard-content">
+
+            <!-- WELCOME HERO -->
+            <section class="bf-welcome-card">
+
+                <div class="bf-welcome-content">
+
+                    <span class="bf-welcome-label">
+                        BUGFLOW ISSUE TRACKER
+                    </span>
+
+                    <h1>
+                        Welcome back,
+                        <span id="dashboardWelcomeName">
+                            Jahnavi!
+                        </span>
+                        <span class="wave">👋</span>
+                    </h1>
+
+                    <p>
+                        Here's what's happening with your projects today.
+                    </p>
+
+                </div>
+
+                <div class="bf-hero-visual">
+
+                    <div class="bf-code-window">
+
+                        <div class="bf-window-header">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="bf-code-lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                    </div>
+
+                    <div class="bf-floating-icon bf-floating-one">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+
+                    <div class="bf-floating-icon bf-floating-two">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DASHBOARD FILTER -->
+            <section class="bf-filter-card">
+
+                <div class="bf-filter-heading">
+
+                    <div class="bf-section-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </div>
+
+                    <div>
+                        <h2>Project Progress</h2>
+
+                        <p>
+                            Select the start date and end date
+                            to view project progress.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="bf-date-controls">
+
+                    <div class="bf-date-input">
+
+                        <label for="dashboardStartDate">
+                            Start Date
+                        </label>
+
+                        <div class="bf-input-wrapper">
+                            <i class="fa-regular fa-calendar"></i>
+
+                            <input
+                                type="date"
+                                id="dashboardStartDate"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="bf-date-input">
+
+                        <label for="dashboardEndDate">
+                            End Date
+                        </label>
+
+                        <div class="bf-input-wrapper">
+                            <i class="fa-regular fa-calendar"></i>
+
+                            <input
+                                type="date"
+                                id="dashboardEndDate"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="bf-primary-button"
+                        onclick="updateDashboardCharts()"
+                    >
+                        <i class="fa-solid fa-filter"></i>
+                        Apply Dates
+                    </button>
+
+                </div>
+
+                <div
+                    id="dashboardDateMessage"
+                    class="dashboard-date-message"
+                ></div>
+
+            </section>
+
+
+            <!-- STATISTICS -->
+            <section class="bf-stat-grid">
+
+                <!-- TOTAL -->
+                <div class="bf-stat-card stat-total">
+
+                    <div class="bf-stat-top">
+
+                        <div class="bf-stat-icon">
+                            <i class="fa-solid fa-bug"></i>
+                        </div>
+
+                        <span class="bf-stat-trend trend-red">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            12%
+                        </span>
+
+                    </div>
+
+                    <div class="bf-stat-label">
+                        Total Issues
+                    </div>
+
+                    <strong
+                        id="dashboardIssues"
+                        class="bf-stat-number"
+                    >
+                        0
+                    </strong>
+
+                    <div class="bf-stat-footer">
+                        <span>vs. last 30 days</span>
+
+                        <div class="bf-mini-line red-line">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- RESOLVED -->
+                <div class="bf-stat-card stat-resolved">
+
+                    <div class="bf-stat-top">
+
+                        <div class="bf-stat-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <span class="bf-stat-trend trend-green">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            25%
+                        </span>
+
+                    </div>
+
+                    <div class="bf-stat-label">
+                        Resolved Issues
+                    </div>
+
+                    <strong
+                        id="dashboardResolved"
+                        class="bf-stat-number"
+                    >
+                        0
+                    </strong>
+
+                    <div class="bf-stat-footer">
+                        <span>vs. last 30 days</span>
+
+                        <div class="bf-mini-line green-line">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- PROGRESS -->
+                <div class="bf-stat-card stat-progress">
+
+                    <div class="bf-stat-top">
+
+                        <div class="bf-stat-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <span class="bf-stat-trend trend-blue">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            20%
+                        </span>
+
+                    </div>
+
+                    <div class="bf-stat-label">
+                        Progress
+                    </div>
+
+                    <strong
+                        id="dashboardProgress"
+                        class="bf-stat-number"
+                    >
+                        0%
+                    </strong>
+
+                    <div class="bf-stat-footer">
+                        <span>project completion</span>
+
+                        <div class="bf-mini-line blue-line">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- COMPLETED -->
+                <div class="bf-stat-card stat-completed">
+
+                    <div class="bf-stat-top">
+
+                        <div class="bf-stat-icon">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+
+                        <span class="bf-stat-trend trend-purple">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            18%
+                        </span>
+
+                    </div>
+
+                    <div class="bf-stat-label">
+                        Completed
+                    </div>
+
+                    <strong
+                        id="dashboardCompleted"
+                        class="bf-stat-number"
+                    >
+                        0
+                    </strong>
+
+                    <div class="bf-stat-footer">
+                        <span>closed successfully</span>
+
+                        <div class="bf-mini-line purple-line">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CHART AREA -->
+            <section class="bf-chart-layout">
+
+                <!-- MAIN CHART -->
+                <div class="bf-panel bf-main-chart">
+
+                    <div class="bf-panel-header">
+
+                        <div class="bf-panel-title">
+
+                            <div class="bf-section-icon blue-icon">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+
+                            <div>
+                                <h2>Issue Overview</h2>
+
+                                <p>
+                                    Issues trend over time
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="bf-chart-legend">
+
+                            <span>
+                                <i class="legend-dot dot-created"></i>
+                                Created
+                            </span>
+
+                            <span>
+                                <i class="legend-dot dot-solved"></i>
+                                Solved
+                            </span>
+
+                            <span>
+                                <i class="legend-dot dot-progress"></i>
+                                In Progress
+                            </span>
+
+                            <span>
+                                <i class="legend-dot dot-resolved"></i>
+                                Resolved
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bf-chart-container">
+
+                        <canvas id="issuesGraph"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DISTRIBUTION -->
+                <div class="bf-panel bf-distribution-panel">
+
+                    <div class="bf-panel-title">
+
+                        <div class="bf-section-icon purple-icon">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+
+                        <div>
+                            <h2>Issue Distribution</h2>
+
+                            <p>
+                                Current issue breakdown
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="bf-donut-wrapper">
+
+                        <div class="bf-donut-glow"></div>
+
+                        <div class="bf-donut-center">
+                            <strong id="bfDistributionTotal">
+                                0
+                            </strong>
+
+                            <span>Total Issues</span>
+                        </div>
+
+                        <div class="bf-distribution-ring"></div>
+
+                    </div>
+
+
+                    <div class="bf-distribution-list">
+
+                        <div class="bf-distribution-item">
+                            <span>
+                                <i class="distribution-dot dot-bug"></i>
+                                Bug
+                            </span>
+                            <strong id="distributionBug">0</strong>
+                        </div>
+
+                        <div class="bf-distribution-item">
+                            <span>
+                                <i class="distribution-dot dot-feature"></i>
+                                Feature
+                            </span>
+                            <strong id="distributionFeature">0</strong>
+                        </div>
+
+                        <div class="bf-distribution-item">
+                            <span>
+                                <i class="distribution-dot dot-task"></i>
+                                Task
+                            </span>
+                            <strong id="distributionTask">0</strong>
+                        </div>
+
+                        <div class="bf-distribution-item">
+                            <span>
+                                <i class="distribution-dot dot-improvement"></i>
+                                Improvement
+                            </span>
+                            <strong id="distributionImprovement">0</strong>
+                        </div>
+
+                        <div class="bf-distribution-item">
+                            <span>
+                                <i class="distribution-dot dot-other"></i>
+                                Other
+                            </span>
+                            <strong id="distributionOther">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- HIDDEN COMPATIBILITY CHARTS -->
+            <div class="bf-hidden-charts">
+
+                <canvas id="resolvedGraph"></canvas>
+
+                <canvas id="progressGraph"></canvas>
+
+                <canvas id="completedGraph"></canvas>
+
+            </div>
+
+
+            <!-- BOTTOM AREA -->
+            <section class="bf-bottom-layout">
+
+                <!-- RECENT ISSUES -->
+                <div class="bf-panel bf-recent-panel">
+
+                    <div class="bf-panel-header">
+
+                        <div class="bf-panel-title">
+
+                            <div class="bf-section-icon red-icon">
+                                <i class="fa-solid fa-bug"></i>
+                            </div>
+
+                            <div>
+                                <h2>Recent Issues</h2>
+
+                                <p>
+                                    Latest issue updates from your team
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="bf-view-all"
+                            onclick="showPage('issues')"
+                        >
+                            View All
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+
+                    <div class="bf-issues-table">
+
+                        <div class="bf-table-header">
+
+                            <span>ID</span>
+                            <span>Title</span>
+                            <span>Project</span>
+                            <span>Priority</span>
+                            <span>Severity</span>
+                            <span>Status</span>
+                            <span>Assignee</span>
+                            <span>Updated</span>
+
+                        </div>
+
+
+                        <div
+                            id="bfRecentIssuesBody"
+                            class="bf-table-body"
+                        >
+
+                            <div class="bf-empty-row">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                Loading issues...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="bf-right-column">
+
+                    <!-- QUICK ACTIONS -->
+                    <div class="bf-panel bf-quick-actions">
+
+                        <div class="bf-panel-title">
+
+                            <div class="bf-section-icon blue-icon">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+
+                            <div>
+                                <h2>Quick Actions</h2>
+                                <p>Work faster</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="bf-action-grid">
+
+                            <button
+                                type="button"
+                                class="bf-action"
+                                onclick="document.getElementById('issueTitle')?.focus()"
+                            >
+
+                                <div class="bf-action-icon blue-action">
+                                    <i class="fa-solid fa-plus"></i>
+                                </div>
+
+                                <strong>Create Issue</strong>
+
+                                <span>Report a new issue</span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="bf-action"
+                                onclick="showPage('board')"
+                            >
+
+                                <div class="bf-action-icon cyan-action">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+
+                                <strong>View Board</strong>
+
+                                <span>Sprint board view</span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="bf-action"
+                                onclick="showPage('analytics')"
+                            >
+
+                                <div class="bf-action-icon purple-action">
+                                    <i class="fa-solid fa-chart-column"></i>
+                                </div>
+
+                                <strong>View Analytics</strong>
+
+                                <span>Check metrics</span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="bf-action"
+                                onclick="showPage('milestone2')"
+                            >
+
+                                <div class="bf-action-icon orange-action">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+
+                                <strong>Workflow</strong>
+
+                                <span>Agile workflow</span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUILD BANNER -->
+                    <div class="bf-panel bf-build-card">
+
+                        <div class="bf-build-glow"></div>
+
+                        <div class="bf-rocket">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+
+                        <h2>
+                            Better Software<br>
+                            Faster Together
+                        </h2>
+
+                        <p>
+                            Track issues, collaborate
+                            and ship great products.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="bf-build-button"
+                            onclick="showPage('issues')"
+                        >
+                            Let's Build
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+
+            <!-- EXISTING CREATE ISSUE FORM -->
+            <section class="bf-create-issue-wrapper">
+
+                <div class="bf-panel">
+
+                    <div class="bf-panel-title">
+
+                        <div class="bf-section-icon purple-icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <div>
+                            <h2>Create New Issue</h2>
+                            <p>Report a bug or software issue</p>
+                        </div>
+
+                    </div>
+
+                    <form id="issueForm">
+
+                        <div class="form-grid">
+
+                            <div>
+                                <label>Project</label>
+
+                                <select id="projectId" required>
+                                    <option value="">
+                                        Select project
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div>
+                                <label>Category</label>
+
+                                <select id="categoryId" required>
+                                    <option value="">
+                                        Select category
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="full">
+                                <label>Issue Title</label>
+
+                                <input
+                                    id="issueTitle"
+                                    type="text"
+                                    placeholder="Example: Login button not working"
+                                    required
+                                >
+
+                                <div
+                                    id="duplicateWarning"
+                                    class="duplicate-warning hidden"
+                                ></div>
+                            </div>
+
+
+                            <div class="full">
+                                <label>Description</label>
+
+                                <textarea
+                                    id="description"
+                                    rows="5"
+                                    placeholder="Describe the issue..."
+                                    required
+                                ></textarea>
+                            </div>
+
+
+                            <div class="full">
+                                <label>Reproduction Steps</label>
+
+                                <textarea
+                                    id="reproductionSteps"
+                                    rows="4"
+                                    placeholder="1. Open login page&#10;2. Enter username&#10;3. Click Login"
+                                ></textarea>
+                            </div>
+
+
+                            <div>
+                                <label>Severity</label>
+
+                                <select id="severity" required>
+                                    <option value="CRITICAL">
+                                        CRITICAL
+                                    </option>
+
+                                    <option value="MAJOR" selected>
+                                        MAJOR
+                                    </option>
+
+                                    <option value="MINOR">
+                                        MINOR
+                                    </option>
+
+                                    <option value="TRIVIAL">
+                                        TRIVIAL
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div>
+                                <label>Priority</label>
+
+                                <select id="priority" required>
+                                    <option value="URGENT">
+                                        URGENT
+                                    </option>
+
+                                    <option value="HIGH" selected>
+                                        HIGH
+                                    </option>
+
+                                    <option value="MEDIUM">
+                                        MEDIUM
+                                    </option>
+
+                                    <option value="LOW">
+                                        LOW
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div>
+                                <label>Affected Module</label>
+
+                                <input
+                                    id="affectedModules"
+                                    placeholder="Authentication"
+                                >
+                            </div>
+
+
+                            <div>
+                                <label>Environment</label>
+
+                                <input
+                                    id="environmentDetails"
+                                    placeholder="Chrome 122, Windows 11"
+                                >
+                            </div>
+
+
+                            <div>
+                                <label>Estimated Effort</label>
+
+                                <input
+                                    id="estimatedEffort"
+                                    type="number"
+                                    min="0"
+                                    placeholder="Hours"
+                                >
+                            </div>
+
+
+                            <div>
+                                <label>Assignee</label>
+
+                                <select id="assigneeId">
+
+                                    <option value="">
+                                        Unassigned
+                                    </option>
+
+                                    <option value="1">
+                                        Jahnavi
+                                    </option>
+
+                                    <option value="2">
+                                        Mahi
+                                    </option>
+
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="bf-primary-button"
+                            type="submit"
+                        >
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Submit Issue
+                        </button>
+
+                    </form>
+
+                    <p id="issueMessage"></p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+
+
+        <!-- =================================================
+             ISSUES PAGE
+        ================================================== -->
+
+        <section
+            class="page-section hidden"
+            id="issuesPage"
+        >
+
+            <section class="card">
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <h2>
+                            Issues
+                        </h2>
+
+                        <p>
+                            Active project issues
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="secondary-button"
+                        onclick="loadIssues()"
+                    >
+                        Refresh
+                    </button>
+
+                </div>
+
+
+                <div class="filters">
+
+                    <input
+                        id="searchInput"
+                        placeholder="Search issues..."
+                        oninput="loadIssues()"
+                    >
+
+
+                    <select
+                        id="statusFilter"
+                        onchange="loadIssues()"
+                    >
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="REPORTED">
+                            REPORTED
+                        </option>
+
+                        <option value="TRIAGED">
+                            TRIAGED
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            IN_PROGRESS
+                        </option>
+
+                        <option value="CODE_REVIEW">
+                            CODE_REVIEW
+                        </option>
+
+                        <option value="RESOLVED">
+                            RESOLVED
+                        </option>
+
+                        <option value="CLOSED">
+                            CLOSED
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        id="severityFilter"
+                        onchange="loadIssues()"
+                    >
+
+                        <option value="">
+                            All Severities
+                        </option>
+
+                        <option value="CRITICAL">
+                            CRITICAL
+                        </option>
+
+                        <option value="MAJOR">
+                            MAJOR
+                        </option>
+
+                        <option value="MINOR">
+                            MINOR
+                        </option>
+
+                        <option value="TRIVIAL">
+                            TRIVIAL
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="issue-list"
+                    id="issueList"
+                >
+                    Loading issues...
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SPRINT BOARD
+        ================================================== -->
+
+        <section
+            class="page-section hidden"
+            id="boardPage"
+        >
+
+            <section class="card">
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <h2>
+                            Sprint Board
+                        </h2>
+
+                        <p>
+                            Track issues through development
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="board">
+
+
+                    <div class="board-column">
+
+                        <h3>
+                            REPORTED
+                        </h3>
+
+                        <div
+                            id="boardReported"
+                            class="board-placeholder"
+                        >
+                            No issues
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="board-column">
+
+                        <h3>
+                            IN PROGRESS
+                        </h3>
+
+                        <div
+                            id="boardProgress"
+                            class="board-placeholder"
+                        >
+                            No issues
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="board-column">
+
+                        <h3>
+                            CODE REVIEW
+                        </h3>
+
+                        <div
+                            id="boardReview"
+                            class="board-placeholder"
+                        >
+                            No issues
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="board-column">
+
+                        <h3>
+                            RESOLVED
+                        </h3>
+
+                        <div
+                            id="boardResolved"
+                            class="board-placeholder"
+                        >
+                            No issues
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANALYTICS PAGE
+        ================================================== -->
+
+        <section
+            class="page-section hidden"
+            id="analyticsPage"
+        >
+
+            <section class="card">
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <h2>
+                            Analytics
+                        </h2>
+
+                        <p>
+                            Issue tracking analytics
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-grid">
+
+
+                    <div class="analytics-card">
+
+                        <span>
+                            Total Issues
+                        </span>
+
+                        <strong id="analyticsTotal">
+                            0
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-card">
+
+                        <span>
+                            Open Issues
+                        </span>
+
+                        <strong id="analyticsOpen">
+                            0
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-card">
+
+                        <span>
+                            Resolved Issues
+                        </span>
+
+                        <strong id="analyticsResolved">
+                            0
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-card">
+
+                        <span>
+                            Critical Issues
+                        </span>
+
+                        <strong id="analyticsCritical">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-chart">
+
+                    <h3>
+                        Issue Distribution
+                    </h3>
+
+                    <div id="analyticsChart">
+                        <canvas id="issueDistributionGraph"></canvas>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SETTINGS PAGE
+        ================================================== -->
+
+        <section
+            class="page-section hidden"
+            id="settingsPage"
+        >
+
+            <section class="card">
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                        <p>
+                            Manage your BugFlow preferences
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-section">
+
+
+                    <div class="settings-heading">
+
+                        <h3>
+                            Account
+                        </h3>
+
+                    </div>
+
+
+                    <div class="settings-option">
+
+                        <strong>
+                            Username
+                        </strong>
+
+                        <p id="settingsUsername">
+                            User
+                        </p>
+
+                    </div>
+
+
+                    <div class="settings-option">
+
+                        <strong>
+                            Role
+                        </strong>
+
+                        <p>
+                            BugFlow Member
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+
+
+        <!-- =================================================
+             WORKFLOW  PAGE
+        ================================================== -->
+
+        <section
+            class="page-section hidden"
+            id="milestone2Page"
+        >
+
+
+            <!-- =================================================
+                 WORKFLOW HEADER + PDF BUTTON
+            ================================================== -->
+
+            <div class="dashboard-header">
+
+                <div>
+
+                    <h2>
+                        Workflow
+                    </h2>
+
+                    <p>
+                    
+                        Agile workflow,
+                        triage and collaboration
+                    </p>
+
+                </div>
+
+
+                <!-- PDF REPORT BUTTON -->
+
+                <button
+                    type="button"
+                    class="primary-button m2-pdf-report-button"
+                    onclick="generateMilestone2Report()"
+                >
+                    <i class="fa-solid fa-file-pdf"></i> Generate Report
+                </button>
+
+            </div>
+
+
+
+            <!-- SMART TRIAGE -->
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <h2>
+                        Smart Triage
+                    </h2>
+
+                    <p>
+                        Match an issue with its recommended
+                        category and priority.
+                    </p>
+
+                </div>
+
+
+                <div class="m2-triage-grid">
+
+
+                    <div>
+
+                        <label>
+                            Issue Title
+                        </label>
+
+                        <input
+                            id="m2TriageTitle"
+                            placeholder="Example: Login API returns 500"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="m2TriageDescription"
+                            rows="3"
+                            placeholder="Describe the issue..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select id="m2TriageCategory">
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Authentication">
+                                Authentication
+                            </option>
+
+                            <option value="Security Vulnerability">
+                                Security Vulnerability
+                            </option>
+
+                            <option value="Database Error">
+                                Database Error
+                            </option>
+
+                            <option value="Backend Logic">
+                                Backend Logic
+                            </option>
+
+                            <option value="API Gateway">
+                                API Gateway
+                            </option>
+
+                            <option value="UI Glitch">
+                                UI Glitch
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div>
+
+                        <label for="m2TriageSeverity">
+                            Severity
+                        </label>
+
+                        <select id="m2TriageSeverity">
+
+                            <option value="CRITICAL">
+                                CRITICAL
+                            </option>
+
+                            <option
+                                value="MAJOR"
+                                selected
+                            >
+                                MAJOR
+                            </option>
+
+                            <option value="MINOR">
+                                MINOR
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="m2-triage-action">
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                            onclick="m2RunTriage()"
+                        >
+                            Calculate & Match
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="m2TriageResult"
+                    class="m2-result hidden"
+                ></div>
+
+            </section>
+
+
+
+            <!-- WORKFLOW -->
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <h2>
+                        Workflow Card
+                    </h2>
+
+                    <p>
+                        Manage active bug status.
+                    </p>
+
+                </div>
+
+
+                <div
+                    id="m2WorkflowIssues"
+                    class="m2-issue-list"
+                >
+                    Loading issues...
+                </div>
+
+            </section>
+
+
+
+            <!-- SPRINT -->
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <h2>
+                        <i class="fa-solid fa-tasks"></i> Sprint Board
+                    </h2>
+
+                    <p>
+                        Active sprints and product backlog.
+                    </p>
+
+                </div>
+
+
+                <div class="m2-sprint-layout">
+
+
+                    <div class="m2-panel">
+
+                        <div class="m2-panel-header">
+
+                            <div>
+
+                                <h3>
+                                    <i class="fa-solid fa-tasks"></i> Active Sprints
+                                </h3>
+
+                                <p>
+                                    Current and past sprints
+                                </p>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                onclick="m2OpenSprintForm()"
+                            >
+                                <i class="fa-solid fa-plus"></i> New Sprint
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="m2SprintList"
+                            class="m2-sprint-list"
+                        >
+                            Loading sprints...
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="m2-panel">
+
+                        <div class="m2-panel-header">
+
+                            <div>
+
+                                <h3>
+                                    <i class="fa-solid fa-list"></i> Product Backlog
+                                </h3>
+
+                                <p>
+                                    Bugs not assigned to a sprint
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="m2Backlog"
+                            class="m2-backlog"
+                        >
+                            Loading backlog...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- SPRINT FORM -->
+
+            <section
+                id="m2SprintForm"
+                class="card hidden"
+            >
+
+                <div class="card-title">
+
+                    <h2>
+                        Create Sprint
+                    </h2>
+
+                    <p>
+                        Agile two-week sprint container.
+                    </p>
+
+                </div>
+
+
+                <div class="m2-sprint-form-grid">
+
+
+                    <div>
+
+                        <label>
+                            Sprint Name
+                        </label>
+
+                        <input
+                            id="m2SprintName"
+                            type="text"
+                            placeholder="Sprint 2"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="m2SprintStatus">
+
+                            <option value="PLANNING">
+                                PLANNING
+                            </option>
+
+                            <option value="ACTIVE">
+                                ACTIVE
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="m2-full">
+
+                        <label>
+                            Goal
+                        </label>
+
+                        <textarea
+                            id="m2SprintGoal"
+                            rows="3"
+                            placeholder="Complete authentication and database bugs."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Start Date
+                        </label>
+
+                        <input
+                            id="m2SprintStart"
+                            type="datetime-local"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            End Date
+                        </label>
+
+                        <input
+                            id="m2SprintEnd"
+                            type="datetime-local"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="m2-form-actions">
+
+                    <button
+                        class="primary-button"
+                        type="button"
+                        onclick="m2CreateSprint()"
+                    >
+                        Create Sprint
+                    </button>
+
+
+                    <button
+                        class="secondary-button"
+                        type="button"
+                        onclick="m2CloseSprintForm()"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="m2SprintMessage"
+                    class="m2-message"
+                ></p>
+
+            </section>
+
+
+
+            <!-- COLLABORATION MODAL -->
+
+            <div
+                id="m2CollaborationModal"
+                class="m2-modal hidden"
+            >
+
+                <div class="m2-modal-content">
+
+
+                    <div class="m2-modal-header">
+
+                        <div>
+
+                            <h2 id="m2ModalTitle">
+                                Issue Collaboration
+                            </h2>
+
+                            <p id="m2ModalSubtitle"></p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="m2-close"
+                            onclick="m2CloseCollaboration()"
+                        >
+                            &times;
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="m2-modal-section">
+
+                        <h3>
+                            Discussion Thread
+                        </h3>
+
+
+                        <div
+                            id="m2Comments"
+                            class="m2-comments"
+                        >
+                            Loading comments...
+                        </div>
+
+
+                        <div class="m2-comment-form">
+
+                            <textarea
+                                id="m2CommentInput"
+                                rows="3"
+                                placeholder="Write a comment..."
+                            ></textarea>
+
+
+                            <button
+                                class="primary-button"
+                                onclick="m2AddComment()"
+                                type="button"
+                            >
+                                Post Comment
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="m2-modal-section">
+
+                        <h3>
+                            Screenshot / Log Uploader
+                        </h3>
+
+
+                        <input
+                            id="m2AttachmentInput"
+                            type="file"
+                            accept=".png,.jpg,.jpeg,.log"
+                        >
+
+
+                        <button
+                            class="secondary-button"
+                            onclick="m2UploadAttachment()"
+                            type="button"
+                        >
+                            Upload File
+                        </button>
+
+
+                        <div
+                            id="m2Attachments"
+                            class="m2-attachments"
+                        ></div>
+
+                    </div>
+
+
+
+                    <div class="m2-modal-section">
+
+                        <h3>
+                            Audit History
+                        </h3>
+
+
+                        <div
+                            id="m2IssueAudit"
+                            class="m2-audit"
+                        >
+                            Loading history...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     ISSUE DETAIL MODAL
+========================================================= -->
+
+<div
+    id="issueModal"
+    class="modal hidden"
+>
+
+
+<div class="modal-content">
+
+    <button
+        class="modal-close"
+        onclick="closeIssueModal()"
+    >
+        &times;
+    </button>
+
+    <div id="issueDetails"></div>
+
+</div>
+
+
+</div>
+</main>
+
+<!-- =========================================================
+     YOUR EXISTING JAVASCRIPT
+========================================================= -->
+
+<script src="/app.js"></script>
+
+<!-- =========================================================
+      PDF REPORT JAVASCRIPT
+========================================================= -->
+
+<script>
+
+async function generateMilestone2Report() {
+
+    try {
+
+        /*
+         * Call the backend PDF endpoint.
+         *
+         * IMPORTANT:
+         * Backend route:
+         * /api/v1/milestone2/report
+         */
+
+        const response = await fetch(
+            "/api/v1/milestone2/report",
+            {
+                method: "GET",
+
+                headers:
+                    typeof authHeaders === "function"
+                        ? authHeaders()
+                        : {}
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Report generation failed"
+            );
+
+        }
+
+
+        const blob =
+            await response.blob();
+
+
+        const url =
+            window.URL.createObjectURL(
+                blob
+            );
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+
+        link.download =
+            "BugFlow_Milestone_2_Report.pdf";
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        link.remove();
+
+
+        window.URL.revokeObjectURL(
+            url
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF Error:",
+            error
+        );
+
+
+        alert(
+            "Unable to generate PDF report."
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

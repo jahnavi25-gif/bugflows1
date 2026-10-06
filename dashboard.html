@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow - Role Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/dashboard.css"
+    >
+    <link rel="stylesheet" href="/static/milestone4.css"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="dashboard-shell">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon"><i class="fa-solid fa-bug"></i></div>
+
+            <div>
+                <h1>BugFlow</h1>
+                <span>Issue Tracker</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <button
+                class="nav-link active"
+                onclick="showDashboard()"
+            >
+                <span><i class="fa-solid fa-chart-bar"></i></span>
+                Dashboard
+            </button>
+
+            <button
+                class="nav-link"
+                onclick="window.location.href='/IssuesDashboard'"
+            >
+                <span><i class="fa-solid fa-home"></i></span>
+                Issues
+            </button>
+
+            <button
+                class="nav-link"
+                onclick="window.location.href='/SprintDashboard'"
+            >
+                <span><i class="fa-solid fa-arrows-spin"></i></span>
+                Sprints
+            </button>
+
+            <button class="nav-link" id="milestone4Nav" onclick="showMilestone4()">
+                <span><i class="fa-solid fa-gauge-high"></i></span>
+                Optimization &amp; Finalization
+            </button>
+
+            <button
+                class="nav-link"
+                onclick="refreshDashboard()"
+            >
+                <span><i class="fa-solid fa-sync"></i></span>
+                Refresh
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="logged-user">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    <i class="fa-solid fa-user"></i>    
+                </div>
+
+                <div class="user-details">
+
+                    <strong id="sidebarUserName">
+                        User
+                    </strong>
+
+                    <span id="sidebarUserRole">
+                        BugFlow Member
+                    </span>
+
+                </div>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="page-kicker">
+                    BUGFLOW WORKSPACE
+                </div>
+
+                <h2 id="pageTitle">
+                    Role Dashboard
+                </h2>
+
+                <p id="pageSubtitle">
+                    Manage your issues, workflow and team activity.
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="role-pill" id="roleBadge">
+                    USER
+                </div>
+
+                <button
+                    class="refresh-button"
+                    onclick="refreshDashboard()"
+                >
+                     <i class="fa-solid fa-sync"></i> Refresh
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        <div
+            id="loadingState"
+            class="loading-state"
+        >
+            <div class="loader"></div>
+            <p>Loading dashboard...</p>
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+        ================================================== -->
+
+        <div
+            id="errorState"
+            class="error-state hidden"
+        >
+            <strong>Unable to load dashboard</strong>
+
+            <p id="errorMessage">
+                Something went wrong.
+            </p>
+
+            <button
+                onclick="refreshDashboard()"
+            >
+                Try Again
+            </button>
+        </div>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            id="dashboardContent"
+            class="dashboard-content hidden"
+        >
+
+            <!-- WELCOME -->
+
+            <section class="welcome-card">
+
+                <div>
+
+                    <span class="welcome-label">
+                        Welcome back
+                    </span>
+
+                    <h3 id="welcomeName">
+                        User
+                    </h3>
+
+                    <p id="welcomeText">
+                        Here's what's happening in your BugFlow workspace.
+                    </p>
+
+                </div>
+
+                <div class="welcome-icon">
+                    <i class="fa-solid fa-bug"></i>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section
+                id="statsGrid"
+                class="stats-grid"
+            >
+
+                <!-- Generated dynamically -->
+
+            </section>
+
+
+            <!-- =================================================
+                 CHARTS
+            ================================================== -->
+
+            <section class="dashboard-grid">
+
+                <div class="panel chart-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="panel-label">
+                                ISSUE OVERVIEW
+                            </span>
+
+                            <h3>Issue Distribution</h3>
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="issueChart"
+                        class="issue-chart"
+                    >
+                        <!-- Generated dynamically -->
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="panel-label">
+                                WORKFLOW
+                            </span>
+
+                            <h3>Status Breakdown</h3>
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="statusBreakdown"
+                        class="status-breakdown"
+                    >
+                        <!-- Generated dynamically -->
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ISSUES
+            ================================================== -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            ISSUES
+                        </span>
+
+                        <h3 id="issuesTitle">
+                            Your Issues
+                        </h3>
+
+                    </div>
+
+                    <span
+                        class="count-badge"
+                        id="issueCount"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    id="issuesContainer"
+                    class="issues-container"
+                >
+                    <!-- Generated dynamically -->
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ADMIN / TRIAGER CONTROLS
+            ================================================== -->
+
+            <section
+                id="managementSection"
+                class="panel hidden"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            MANAGEMENT
+                        </span>
+
+                        <h3>Team Management</h3>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="managementContent"
+                    class="management-content"
+                >
+                    <!-- Generated dynamically -->
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SPRINTS
+            ================================================== -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            AGILE
+                        </span>
+
+                        <h3>Active Sprints</h3>
+
+                    </div>
+
+                    <span
+                        class="count-badge"
+                        id="sprintCount"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+                <div
+                    id="sprintsContainer"
+                    class="sprints-container"
+                >
+                    <!-- Generated dynamically -->
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ACTIVITY
+            ================================================== -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            COLLABORATION
+                        </span>
+
+                        <h3>Recent Activity</h3>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="activityContainer"
+                    class="activity-container"
+                >
+                    <!-- Generated dynamically -->
+                </div>
+
+            </section>
+
+        </section>
+        <section id="milestone4Content" class="m4-page hidden">
+
+    <div id="m4Error" class="m4-error hidden"></div>
+
+    <!-- KPI CARDS -->
+    <div class="m4-kpi-grid">
+
+        <div class="m4-kpi-card">
+            <div class="m4-kpi-icon">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+            <div>
+                <span>Bug Fix Rate</span>
+                <strong id="m4FixRate">--</strong>
+            </div>
+        </div>
+
+        <div class="m4-kpi-card">
+            <div class="m4-kpi-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div>
+                <span>Average Fix Time (MTTR)</span>
+                <strong id="m4Mttr">--</strong>
+            </div>
+        </div>
+
+        <div class="m4-kpi-card">
+            <div class="m4-kpi-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <div>
+                <span>Backlog Health Score</span>
+                <strong id="m4Backlog">--</strong>
+            </div>
+        </div>
+
+        <div class="m4-kpi-card">
+            <div class="m4-kpi-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <span>Defect Leakage Rate</span>
+                <strong id="m4Leakage">--</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="m4-section">
+
+        <div class="m4-section-title">
+            <h2>
+                <i class="fa-solid fa-bolt"></i>
+                Performance
+            </h2>
+        </div>
+
+        <div class="m4-performance-grid">
+
+            <div class="m4-performance-card">
+                <span>Max DB Pool</span>
+                <strong>125</strong>
+                <small>Configured capacity target</small>
+            </div>
+
+            <div class="m4-performance-card">
+                <span>Avg Response Time</span>
+                <strong>180ms</strong>
+                <small>Target &lt; 300ms</small>
+            </div>
+
+            <div class="m4-performance-card">
+                <span>Stress Capacity</span>
+                <strong>50,000+</strong>
+                <small>Issues supported</small>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DATABASE -->
+    <div class="m4-section">
+
+        <div class="m4-section-title">
+            <h2>
+                <i class="fa-solid fa-database"></i>
+                Database Optimization
+            </h2>
+        </div>
+
+        <div class="m4-checklist">
+
+            <div class="m4-check-item">
+                <span class="m4-check-icon">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <div>
+                    <strong>PostgreSQL Composite Indexes Active</strong>
+                    <small>
+                        Optimized project/status and issue queries
+                    </small>
+                </div>
+            </div>
+
+            <div class="m4-check-item">
+                <span class="m4-check-icon">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <div>
+                    <strong>Connection Pooling Enabled</strong>
+                    <small>
+                        SQLAlchemy connection pool configured
+                    </small>
+                </div>
+            </div>
+
+            <div class="m4-check-item">
+                <span class="m4-check-icon">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+                <div>
+                    <strong>Zero Critical Security Violations</strong>
+                    <small>
+                        Security validation completed
+                    </small>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DEVELOPER WORKLOAD -->
+    <div class="m4-section">
+
+        <div class="m4-section-title">
+            <div>
+                <h2>
+                    <i class="fa-solid fa-users"></i>
+                    Developer Productivity Matrix
+                </h2>
+                <p>Current workload and fix performance by developer</p>
+            </div>
+        </div>
+
+        <div class="m4-table-wrapper">
+
+            <table class="m4-workload-table">
+
+                <thead>
+                    <tr>
+                        <th>Developer</th>
+                        <th>Team</th>
+                        <th>Active Tasks</th>
+                        <th>Completed Fixes</th>
+                        <th>Avg MTTR</th>
+                        <th>Resource Balance</th>
+                    </tr>
+                </thead>
+
+                <tbody id="m4WorkloadBody">
+
+                    <tr>
+                        <td colspan="6" class="m4-loading">
+                            Loading developer workload...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- DOCUMENTATION -->
+    <div class="m4-section">
+
+        <div class="m4-section-title">
+            <h2>
+                <i class="fa-solid fa-book"></i>
+                Documentation & Guides
+            </h2>
+        </div>
+
+        <div class="m4-doc-buttons">
+
+            <button onclick="window.open('/docs', '_blank')">
+                <i class="fa-solid fa-code"></i>
+                API Documentation
+            </button>
+
+            <button onclick="window.open('/redoc', '_blank')">
+                <i class="fa-solid fa-file-lines"></i>
+                ReDoc
+            </button>
+
+            <button onclick="window.open('/README.md', '_blank')">
+                <i class="fa-solid fa-book-open"></i>
+                README
+            </button>
+
+            <button onclick="publishMilestone4Docs()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                Publish All Documentation & Guides
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/dashboard.js"></script>
+<script src="/static/milestone4.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        BugFlow — Sprint Dashboard
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/SprintDashboard.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
+    ></script>
+
+</head>
+
+
+<body>
+
+<div class="app-shell">
+
+    <!-- =========================
+        SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <!-- BRAND -->
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div>
+                <h1>BugFlow</h1>
+                <span>Issue Tracker</span>
+            </div>
+        </div>
+
+
+        <!-- NAVIGATION -->
+        <nav class="sidebar-nav">
+
+            <button
+                class="nav-link"
+                onclick="window.location.href='/Dashboard'"
+            >
+                <span>
+                    <i class="fa-solid fa-chart-bar"></i>
+                </span>
+                Dashboard
+            </button>
+
+
+            <button
+                class="nav-link"
+                onclick="window.location.href='/IssuesDashboard'"
+            >
+                <span>
+                    <i class="fa-solid fa-list"></i>
+                </span>
+                Issues
+            </button>
+
+
+            <!-- ACTIVE SPRINTS -->
+            <button
+                class="nav-link active"
+                onclick="window.location.href='/SprintDashboard'"
+            >
+                <span>
+                    <i class="fa-solid fa-arrows-spin"></i>
+                </span>
+                Sprints
+            </button>
+
+            <button
+                class="nav-link"
+                onclick="refreshDashboard()"
+            >
+                <span><i class="fa-solid fa-sync"></i></span>
+                Refresh
+            </button>
+
+        </nav>
+
+
+        <!-- USER / LOGOUT -->
+        <div class="sidebar-bottom">
+
+            <div class="logged-user">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="user-details">
+
+                    <strong id="sidebarUserName">
+                        User
+                    </strong>
+
+                    <span id="sidebarUserRole">
+                        BugFlow Member
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="search-wrap">
+
+                <span>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <input
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Search issues, sprints, or projects…"
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    id="refreshBtn"
+                    title="Refresh"
+                >
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+
+                <button
+                    class="icon-btn"
+                    id="themeBtn"
+                    title="Toggle theme"
+                >
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+
+                <div class="user-chip">
+
+                    <div
+                        class="avatar"
+                        id="avatar"
+                    >
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <b id="userName">
+                            User
+                        </b>
+
+                        <small id="userRole">
+                            Loading…
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-head">
+
+            <div>
+
+                <div class="eyebrow">
+                    AGILE DELIVERY / SPRINT CONTROL
+                </div>
+
+                <h1>
+                    Sprint Dashboard
+                </h1>
+
+                <p>
+                    Track sprint progress, issue flow,
+                    workload and delivery health in real time.
+                </p>
+
+            </div>
+
+
+            <div class="head-actions">
+
+                <select
+                    id="sprintSelect"
+                    class="control"
+                >
+                </select>
+
+
+                <button
+                    class="btn primary"
+                    id="newSprintBtn"
+                >
+                    <i class="fa-solid fa-plus"></i> New Sprint
+                </button>
+
+                <button
+                    class="btn secondary"
+                    id="generatePdfBtn"
+                    type="button"
+                >
+                    <i class="fa-solid fa-file-pdf"></i> PDF Report
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- KPI CARDS -->
+
+        <section class="kpi-grid">
+
+
+            <article class="kpi blue">
+
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-bug"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Issues
+                    </span>
+
+                    <strong id="totalIssues">
+                        —
+                    </strong>
+
+                    <small id="totalDelta">
+                        Selected sprint
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="kpi green">
+
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong id="completedIssues">
+                        —
+                    </strong>
+
+                    <small id="completionRate">
+                        —% completion
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="kpi amber">
+
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-spinner"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        In Progress
+                    </span>
+
+                    <strong id="progressIssues">
+                        —
+                    </strong>
+
+                    <small id="activeRate">
+                        —% active
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="kpi red">
+
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        QA Queue
+                    </span>
+
+                    <strong id="qaIssues">
+                        —
+                    </strong>
+
+                    <small>
+                        Awaiting verification
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="kpi purple">
+
+                <div class="kpi-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        Velocity
+                    </span>
+
+                    <strong id="velocity">
+                        —
+                    </strong>
+
+                    <small>
+                        Completed issues
+                    </small>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- PROGRESS + FLOW -->
+
+        <section class="grid-2">
+
+
+            <article class="card progress-card">
+
+                <div class="card-head">
+
+                    <div>
+
+                        <h2>
+                            Sprint Progress
+                        </h2>
+
+                        <p id="sprintGoal">
+                            Loading sprint goal…
+                        </p>
+
+                    </div>
+
+                    <span
+                        class="status-badge"
+                        id="sprintStatus"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="progress-layout">
+
+                    <div
+                        class="ring"
+                        id="progressRing"
+                    >
+
+                        <div>
+
+                            <strong id="progressPct">
+                                0%
+                            </strong>
+
+                            <span>
+                                complete
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="legend"
+                        id="statusLegend"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="date-row">
+
+                    <span id="sprintDates">
+                        —
+                    </span>
+
+                    <span id="daysLeft">
+                        —
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="card">
+
+                <div class="card-head">
+
+                    <div>
+
+                        <h2>
+                            Issue Flow
+                        </h2>
+
+                        <p>
+                            Created vs resolved across the selected sprint
+                        </p>
+
+                    </div>
+
+                    <span class="live-dot">
+
+                        <i></i>
+
+                        Live
+
+                    </span>
+
+                </div>
+
+
+                <div class="chart-box">
+
+                    <canvas
+                        id="flowChart"
+                    ></canvas>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ANALYTICS -->
+
+        <section class="grid-2">
+
+
+            <article class="card">
+
+                <div class="card-head">
+
+                    <div>
+
+                        <h2>
+                            Issue Distribution
+                        </h2>
+
+                        <p>
+                            Classification from the current database
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-box donut">
+
+                    <canvas
+                        id="typeChart"
+                    ></canvas>
+
+                </div>
+
+            </article>
+
+
+            <article class="card">
+
+                <div class="card-head">
+
+                    <div>
+
+                        <h2>
+                            Priority Mix
+                        </h2>
+
+                        <p>
+                            Severity and priority score across sprint work
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="priority-bars"
+                    id="priorityBars"
+                >
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- SPRINT BOARD -->
+
+        <section class="card board-card">
+
+            <div class="card-head board-head">
+
+                <div>
+
+                    <h2>
+                        Sprint Board
+                    </h2>
+
+                    <p>
+                        Actual workflow statuses are mapped
+                        to the five delivery columns.
+                    </p>
+
+                </div>
+
+
+                <div class="board-tools">
+
+                    <button
+                        class="btn ghost active"
+                        data-view="board"
+                    >
+                        <i class="fa-solid fa-th-large"></i> Board
+                    </button>
+
+                    <button
+                        class="btn ghost"
+                        data-view="list"
+                    >
+                        <i class="fa-solid fa-list"></i> List
+                    </button>
+
+                    <button
+                        class="btn ghost"
+                        id="filtersBtn"
+                    >
+                        <i class="fa-solid fa-filter"></i> Filters
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="board"
+                class="board"
+            >
+            </div>
+
+
+            <div
+                id="listView"
+                class="list-view hidden"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- ACTIVITY -->
+
+        <section class="card activity-card">
+
+            <div class="card-head">
+
+                <div>
+
+                    <h2>
+                        Recent Activity
+                    </h2>
+
+                    <p>
+                        Audit trail from the existing BugFlow API
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="activity"
+                class="activity"
+            >
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     CREATE SPRINT MODAL
+========================== -->
+
+<div
+    class="modal hidden"
+    id="sprintModal"
+>
+
+    <div class="modal-panel">
+
+        <div class="modal-head">
+
+            <h2>
+                Create Sprint
+            </h2>
+
+            <button
+                class="icon-btn"
+                id="closeModal"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form id="sprintForm">
+
+
+            <label>
+
+                Sprint name
+
+                <input
+                    name="sprint_name"
+                    required
+                    placeholder="Sprint 6 — Web App Release"
+                >
+
+            </label>
+
+
+            <label>
+
+                Goal
+
+                <textarea
+                    name="goal"
+                    rows="3"
+                    placeholder="What should this sprint deliver?"
+                ></textarea>
+
+            </label>
+
+
+            <div class="form-grid">
+
+                <label>
+
+                    Start date
+
+                    <input
+                        name="start_date"
+                        type="datetime-local"
+                        required
+                    >
+
+                </label>
+
+
+                <label>
+
+                    End date
+
+                    <input
+                        name="end_date"
+                        type="datetime-local"
+                        required
+                    >
+
+                </label>
+
+            </div>
+
+
+            <label>
+
+                Status
+
+                <select name="status">
+
+                    <option>
+                        PLANNING
+                    </option>
+
+                    <option>
+                        ACTIVE
+                    </option>
+
+                    <option>
+                        COMPLETED
+                    </option>
+
+                </select>
+
+            </label>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn ghost"
+                    id="cancelModal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="btn primary"
+                >
+                    Create Sprint
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="/static/SprintDashboard.js"></script>
+
+</body>
+
+</html>

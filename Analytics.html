@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow Analytics</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/Analytics.css"
+    >
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div>
+                <h1>Bug<span>Flow</span></h1>
+                <small>Issue Tracker</small>
+            </div>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                MAIN
+            </div>
+
+            <a href="/IssuesDashboard" class="nav-item">
+                <span><i class="fa-solid fa-house"></i></span>
+                Dashboard
+            </a>
+
+            <a href="/Issues" class="nav-item">
+                <span><i class="fa-solid fa-bug"></i></span>
+                Issues
+            </a>
+
+            <a href="/IssuesBoard" class="nav-item">
+                <span><i class="fa-solid fa-list"></i></span>
+                Issues Board
+            </a>
+
+            <a href="/Analytics" class="nav-item active">
+                <span><i class="fa-solid fa-chart-column"></i></span>
+                Analytics
+            </a>
+
+            <a href="/Workflow" class="nav-item">
+                <span><i class="fa-solid fa-bolt"></i></span>
+                Workflow
+            </a>
+
+        </div>
+
+
+        <div class="nav-section system">
+
+            <div class="nav-title">
+                SYSTEM
+            </div>
+
+            <a href="/Settings" class="nav-item">
+                <span><i class="fa-solid fa-gear"></i></span>
+                Settings
+            </a>
+
+            <a href="/login" class="nav-item">
+                <span><i class="fa-solid fa-right-from-bracket"></i></span>
+                Logout
+            </a>
+
+            <a href="/Dashboard" class="nav-item">
+                <span><i class="fa-solid fa-backward"></i></span>
+                Back to Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                J
+            </div>
+
+            <div>
+                <strong>Jahnavi Kota</strong>
+                <small>Admin</small>
+
+                <div class="online">
+                    <i></i>
+                    Online
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="search">
+
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+
+                <input
+                    type="text"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button class="icon-button">
+                    <i class="fa-solid fa-bell"></i>
+                    <b>3</b>
+                </button>
+
+                <button class="icon-button">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
+
+                <button class="date-button">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span id="dateRange"></span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- HEADER -->
+            <div class="page-header">
+
+                <div class="page-heading">
+
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>Analytics</h2>
+
+                        <p>
+                            Get insights from your project data and track performance.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STAT CARDS -->
+            <div class="stats-grid">
+
+                <div class="stat-card pink">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+
+                    <div>
+                        <span>Total Issues</span>
+                        <strong id="totalIssues">0</strong>
+
+                        <small class="positive">
+                            ↑ 12%
+                        </small>
+
+                        <small>
+                            vs. last 30 days
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card green">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Resolved Issues</span>
+                        <strong id="resolvedIssues">0</strong>
+
+                        <small class="positive">
+                            ↑ 25%
+                        </small>
+
+                        <small>
+                            vs. last 30 days
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card blue">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div>
+                        <span>Open Issues</span>
+                        <strong id="openIssues">0</strong>
+
+                        <small class="positive">
+                            ↑ 8%
+                        </small>
+
+                        <small>
+                            vs. last 30 days
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card purple">
+
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Completed Issues</span>
+                        <strong id="completedIssues">0</strong>
+
+                        <small class="positive">
+                            ↑ 18%
+                        </small>
+
+                        <small>
+                            vs. last 30 days
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD GRID -->
+            <div class="dashboard-grid">
+
+
+                <!-- TREND -->
+                <section class="panel trend-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>
+                                <i class="fa-solid fa-chart-column"></i> &nbsp; Issue Trend
+                            </h3>
+
+                            <p>
+                                Created vs Resolved issues overtime
+                            </p>
+                        </div>
+
+                        <div class="legend">
+
+                            <span>
+                                <i class="created"></i>
+                                Created
+                            </span>
+
+                            <span>
+                                <i class="resolved"></i>
+                                Resolved
+                            </span>
+
+                            <span>
+                                <i class="progress"></i>
+                                In Progress
+                            </span>
+
+                            <span>
+                                <i class="closed"></i>
+                                Closed
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chart-container">
+
+                        <canvas id="trendChart"></canvas>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DISTRIBUTION -->
+                <section class="panel distribution-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>
+                                <i class="fa-solid fa-chart-pie"></i> &nbsp; Issue Distribution
+                            </h3>
+
+                            <p>
+                                By type
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="donut-area">
+
+                        <canvas id="categoryChart"></canvas>
+
+                        <div class="distribution-list">
+
+                            <div>
+                                <i class="bug"></i>
+                                <span>Bug</span>
+                                <b id="bugValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i class="feature"></i>
+                                <span>Feature</span>
+                                <b id="featureValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i class="task"></i>
+                                <span>Task</span>
+                                <b id="taskValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i class="improvement"></i>
+                                <span>Improvement</span>
+                                <b id="improvementValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i class="other"></i>
+                                <span>Other</span>
+                                <b id="otherValue">0%</b>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- PRIORITY -->
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>
+                                <i class="fa-solid fa-chart-column"></i> &nbsp; Issues by Priority
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div class="bar-chart">
+
+                        <div class="bar-item">
+                            <span>Urgent</span>
+                            <div class="bar">
+                                <i id="urgentBar"></i>
+                            </div>
+                            <b id="urgentValue">0</b>
+                        </div>
+
+                        <div class="bar-item">
+                            <span>High</span>
+                            <div class="bar">
+                                <i id="highBar"></i>
+                            </div>
+                            <b id="highValue">0</b>
+                        </div>
+
+                        <div class="bar-item">
+                            <span>Medium</span>
+                            <div class="bar">
+                                <i id="mediumBar"></i>
+                            </div>
+                            <b id="mediumValue">0</b>
+                        </div>
+
+                        <div class="bar-item">
+                            <span>Low</span>
+                            <div class="bar">
+                                <i id="lowBar"></i>
+                            </div>
+                            <b id="lowValue">0</b>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SEVERITY -->
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>
+                                <i class="fa-solid fa-bug"></i> &nbsp; Issues by Severity
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div class="severity-content">
+
+                        <canvas id="severityChart"></canvas>
+
+                        <div class="severity-list">
+
+                            <div>
+                                <i></i>
+                                Critical
+                                <b id="criticalValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i></i>
+                                Major
+                                <b id="majorValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i></i>
+                                Minor
+                                <b id="minorValue">0%</b>
+                            </div>
+
+                            <div>
+                                <i></i>
+                                Trivial
+                                <b id="trivialValue">0%</b>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- TOP PROJECTS -->
+                <section class="panel projects-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>
+                                <i class="fa-solid fa-bug"></i> &nbsp; Top Projects
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div id="projectsList">
+
+                        <!-- JavaScript inserts projects -->
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+
+            <!-- RIGHT SIDEBAR -->
+            <aside class="right-sidebar">
+
+
+                <!-- TIME RANGE -->
+                <section class="side-panel">
+
+                    <h3>
+                        <i class="fa-solid fa-calendar-days"></i> &nbsp; Time Range
+                    </h3>
+
+                    <select id="rangeSelect">
+
+                        <option value="custom">
+                            Custom Range
+                        </option>
+
+                        <option value="7">
+                            Last 7 Days
+                        </option>
+
+                        <option value="30">
+                            Last 30 Days
+                        </option>
+
+                        <option value="90">
+                            Last 90 Days
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        <i class="fa-solid fa-calendar-days"></i> &nbsp; Start Date
+                    </label>
+
+                    <input
+                        id="startDate"
+                        type="date"
+                        value="2026-08-01"
+                    >
+
+
+                    <label>
+                        <i class="fa-solid fa-calendar-days"></i> &nbsp; End Date
+                    </label>
+
+                    <input
+                        id="endDate"
+                        type="date"
+                        value="2026-09-30"
+                    >
+
+
+                    <button
+                        id="updateButton"
+                        class="update-button"
+                    >
+                        ⟳ &nbsp; Update Analytics
+                    </button>
+
+                </section>
+
+
+                <!-- INSIGHTS -->
+                <section class="side-panel insights">
+
+                    <h3>
+                        💡 &nbsp; Insights
+                    </h3>
+
+
+                    <div class="insight">
+
+                        <div class="insight-icon pink">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Total issues increased by 12%
+                            </strong>
+
+                            <p>
+                                compared to the last 30 days.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+
+                        <div class="insight-icon green">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Resolved issues are up by 25%
+                            </strong>
+
+                            <p>
+                                showing good progress.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+
+                        <div class="insight-icon blue">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Open issues are 18
+                            </strong>
+
+                            <p>
+                                7% higher than last month.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+
+                        <div class="insight-icon purple">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Completion rate is 9
+                            </strong>
+
+                            <p>
+                                with 18% improvement.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- ============================================================
+     MILESTONE 3
+============================================================ -->
+
+<section id="milestone3Analytics"
+         class="milestone3-page">
+
+    <!-- HEADER -->
+
+    <div class="m3-header">
+
+        <div>
+            <span class="m3-kicker">
+                MILESTONE 3
+            </span>
+
+            <h2>
+                Analytics & APIs
+            </h2>
+
+            <p>
+                CI/CD automation, software quality metrics,
+                interactive Plotly analytics and report exports.
+            </p>
+        </div>
+
+        <div class="m3-header-icon">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+    </div>
+
+
+    <!-- SERVICE BANNER -->
+
+    <div class="m3-service-banner">
+
+        <div class="service-item">
+
+            <div class="service-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div>
+                <span>
+                    Notification Service
+                </span>
+
+                <strong id="m3ServiceStatus">
+                    Checking...
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="service-item">
+
+            <div class="service-icon blue">
+                <i class="fa-solid fa-code-branch"></i>
+            </div>
+
+            <div>
+                <span>
+                    Security Status
+                </span>
+
+                <strong>
+                    CI/CD Sync Active
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="service-actions">
+
+            <button
+                class="m3-btn pdf"
+                type="button"
+                onclick="m3Download('/api/v1/export/pdf')">
+
+                <i class="fa-solid fa-file-pdf"></i>
+
+                Export PDF
+
+            </button>
+
+
+            <button
+                class="m3-btn csv"
+                type="button"
+                onclick="m3Download('/api/v1/export/csv')">
+
+                <i class="fa-solid fa-file-csv"></i>
+
+                Export CSV
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUALITY SCORECARD -->
+
+    <div class="m3-section-title">
+
+        <div>
+            <span>SOFTWARE QUALITY</span>
+
+            <h3>
+                Quality Scorecard
+            </h3>
+        </div>
+
+    </div>
+
+
+    <div class="m3-metrics-grid">
+
+        <article class="m3-metric-card">
+
+            <div class="metric-top">
+
+                <span>
+                    Fix Rate
+                </span>
+
+                <i class="fa-solid fa-wrench"></i>
+
+            </div>
+
+            <strong id="m3FixRate">
+                --%
+            </strong>
+
+            <small>
+                (Resolved + Closed) / Total Bugs
+            </small>
+
+        </article>
+
+
+        <article class="m3-metric-card">
+
+            <div class="metric-top">
+
+                <span>
+                    MTTR
+                </span>
+
+                <i class="fa-solid fa-clock"></i>
+
+            </div>
+
+            <strong id="m3Mttr">
+                --
+            </strong>
+
+            <small>
+                Average hours from creation to resolution
+            </small>
+
+        </article>
+
+
+        <article class="m3-metric-card">
+
+            <div class="metric-top">
+
+                <span>
+                    Defect Leakage
+                </span>
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+            </div>
+
+            <strong id="m3Leakage">
+                --%
+            </strong>
+
+            <small>
+                Production bugs / total bugs
+            </small>
+
+        </article>
+
+
+        <article class="m3-metric-card">
+
+            <div class="metric-top">
+
+                <span>
+                    Backlog Health
+                </span>
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+            </div>
+
+            <strong id="m3BacklogHealth">
+                --
+            </strong>
+
+            <small>
+                100 minus 10 points per open Critical bug
+            </small>
+
+        </article>
+
+    </div>
+
+
+    <!-- PLOTLY -->
+
+    <div class="m3-section-title">
+
+        <div>
+            <span>INTERACTIVE ANALYTICS</span>
+
+            <h3>
+                Plotly Visualizations
+            </h3>
+        </div>
+
+    </div>
+
+
+    <div class="m3-chart-grid">
+
+        <article class="m3-chart-card trend">
+
+            <div class="chart-card-header">
+
+                <div>
+                    <h3>
+                        Defect Trend
+                    </h3>
+
+                    <p>
+                        New vs resolved bugs — last 14 days
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <div
+                id="m3DefectTrend"
+                class="plotly-container">
+            </div>
+
+        </article>
+
+
+        <article class="m3-chart-card">
+
+            <div class="chart-card-header">
+
+                <div>
+                    <h3>
+                        Severity Distribution
+                    </h3>
+
+                    <p>
+                        Critical, Major, Minor and Trivial
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+            <div
+                id="m3SeverityChart"
+                class="plotly-container small">
+            </div>
+
+        </article>
+
+
+        <article class="m3-chart-card">
+
+            <div class="chart-card-header">
+
+                <div>
+                    <h3>
+                        Workflow Pipeline
+                    </h3>
+
+                    <p>
+                        Current bugs by workflow stage
+                    </p>
+                </div>
+
+                <i class="fa-solid fa-bars-progress"></i>
+
+            </div>
+
+            <div
+                id="m3WorkflowChart"
+                class="plotly-container small">
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- WEBHOOK -->
+
+    <div class="m3-two-column">
+
+        <article class="m3-panel webhook-panel">
+
+            <div class="panel-title">
+
+                <div class="panel-icon">
+                    <i class="fa-solid fa-code-commit"></i>
+                </div>
+
+                <div>
+                    <h3>
+                        CI/CD Git Webhook Bot
+                    </h3>
+
+                    <p>
+                        Automatically moves referenced bugs to QA.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <label>
+                Commit Message
+            </label>
+
+            <input
+                id="m3CommitMessage"
+                type="text"
+                value="Merge PR #45: fixes #2 login password crash"
+                placeholder="Example: fixes #2"
+            >
+
+
+            <label>
+                Commit Hash
+            </label>
+
+            <input
+                id="m3CommitHash"
+                type="text"
+                value="a7f8c92"
+                placeholder="Git commit hash"
+            >
+
+
+            <button
+                class="m3-primary-button"
+                type="button"
+                onclick="m3SimulateWebhook()">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                Simulate Git Commit
+
+            </button>
+
+
+            <div
+                id="m3WebhookStatus"
+                class="m3-status">
+            </div>
+
+
+            <pre id="m3WebhookResult">Waiting for webhook...</pre>
+
+        </article>
+
+
+        <!-- API EXPLORER -->
+
+        <article class="m3-panel">
+
+            <div class="panel-title">
+
+                <div class="panel-icon blue">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+
+                <div>
+                    <h3>
+                        Live REST API Explorer
+                    </h3>
+
+                    <p>
+                        Test your real FastAPI endpoints.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="api-row">
+
+                <span class="method get">
+                    GET
+                </span>
+
+                <code>
+                    /api/v1/issues/
+                </code>
+
+                <button
+                    onclick="m3TestApi('/api/v1/issues/')">
+
+                    Send
+
+                </button>
+
+            </div>
+
+
+            <div class="api-row">
+
+                <span class="method get">
+                    GET
+                </span>
+
+                <code>
+                    /api/v1/analytics/quality-metrics
+                </code>
+
+                <button
+                    onclick="m3TestApi('/api/v1/analytics/quality-metrics')">
+
+                    Send
+
+                </button>
+
+            </div>
+
+
+            <div class="api-row">
+
+                <span class="method get">
+                    GET
+                </span>
+
+                <code>
+                    /api/v1/analytics/defect-trends
+                </code>
+
+                <button
+                    onclick="m3TestApi('/api/v1/analytics/defect-trends')">
+
+                    Send
+
+                </button>
+
+            </div>
+
+
+            <div class="api-row">
+
+                <span class="method get">
+                    GET
+                </span>
+
+                <code>
+                    /api/v1/analytics/plotly-charts
+                </code>
+
+                <button
+                    onclick="m3TestApi('/api/v1/analytics/plotly-charts')">
+
+                    Send
+
+                </button>
+
+            </div>
+
+
+            <pre
+                id="m3ApiResult"
+                class="api-result">No request yet.</pre>
+
+        </article>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div
+        id="m3Status"
+        class="m3-global-status">
+    </div>
+
+</section>
+
+
+<!-- Plotly -->
+<script>
+    function updateDateRange() {
+        const now = new Date();
+
+        const year = now.getFullYear();
+        const month = now.getMonth();
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+
+        const options = {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        };
+
+        const start = firstDay.toLocaleDateString("en-US", options);
+        const end = lastDay.toLocaleDateString("en-US", options);
+
+        document.getElementById("dateRange").textContent =
+            `${start} - ${end}`;
+    }
+
+    updateDateRange();
+</script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/Analytics.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow - Settings</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/Settings.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div>
+                <h1>
+                    Bug<span>Flow</span>
+                </h1>
+
+                <p>Issue Tracker</p>
+            </div>
+
+        </div>
+
+
+        <div class="menu-section">
+
+            <div class="menu-title">
+                MAIN
+            </div>
+
+            <a href="/IssuesDashboard" class="menu-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/Issues" class="menu-item">
+                <i class="fa-solid fa-bug"></i>
+                <span>Issues</span>
+            </a>
+
+            <a href="/IssuesBoard" class="menu-item">
+                <i class="fa-solid fa-list"></i>
+                <span>Issues Board</span>
+            </a>
+
+            <a href="/Analytics" class="menu-item">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Analytics</span>
+            </a>
+
+            <a href="/Workflow" class="menu-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Workflow</span>
+            </a>
+
+        </div>
+
+
+        <div class="menu-section system">
+
+            <div class="menu-title">
+                SYSTEM
+            </div>
+
+            <a
+                href="/Settings"
+                class="menu-item active"
+            >
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="/login" class="menu-item">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+            <a href="/Dashboard" class="menu-item">
+                <i class="fa-solid fa-backward"></i>
+                <span>Back to Dashboard</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                JK
+            </div>
+
+            <div>
+
+                <strong id="sidebarName">
+                    Jahnavi Kota
+                </strong>
+
+                <small id="sidebarRole">
+                    DEVELOPER
+                </small>
+
+                <span class="online">
+                    <span></span>
+                    Online
+                </span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div class="search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-count">
+                        3
+                    </span>
+                </button>
+
+                <button
+                    class="icon-button"
+                    id="topThemeButton"
+                >
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <button class="date-button">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span>
+                        Sep 1, 2025 - Sep 30, 2025
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================
+             CONTENT
+        ====================================== -->
+
+        <section class="content">
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-banner">
+
+                <div class="banner-icon">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Settings
+                    </h2>
+
+                    <p>
+                        Manage your account, preferences and
+                        system configuration.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-grid">
+
+
+                <!-- =================================
+                     LEFT COLUMN
+                ================================= -->
+
+                <div class="left-column">
+
+
+                    <!-- PROFILE -->
+
+                    <section class="panel profile-panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Profile Settings
+                                </h3>
+
+                                <p>
+                                    Update your personal information
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <form id="profileForm">
+
+                            <div class="form-grid">
+
+                                <div class="field">
+
+                                    <label>
+                                        Full Name
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-regular fa-user"></i>
+
+                                        <input
+                                            type="text"
+                                            id="fullName"
+                                            required
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>
+                                        Username
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-regular fa-user"></i>
+
+                                        <input
+                                            type="text"
+                                            id="username"
+                                            required
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>
+                                        Email Address
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-regular fa-envelope"></i>
+
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            required
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>
+                                        Role
+                                    </label>
+
+                                    <div class="select-wrapper">
+
+                                        <i class="fa-solid fa-shield-halved"></i>
+
+                                        <select id="role">
+
+                                            <option value="Developer">
+                                                Developer
+                                            </option>
+
+                                            <option value="Tester">
+                                                Tester
+                                            </option>
+
+                                            <option value="Manager">
+                                                Manager
+                                            </option>
+
+                                            <option value="Admin">
+                                                Admin
+                                            </option>
+
+                                        </select>
+
+                                        <i class="fa-solid fa-chevron-down"></i>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button
+                                    type="submit"
+                                    class="primary-button"
+                                >
+                                    <i class="fa-regular fa-floppy-disk"></i>
+                                    Save Changes
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </section>
+
+
+
+                    <!-- CHANGE PASSWORD -->
+
+                    <section class="panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Change Password
+                                </h3>
+
+                                <p>
+                                    Keep your account secure
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <form id="passwordForm">
+
+                            <div class="password-grid">
+
+
+                                <div class="field">
+
+                                    <label>
+                                        Current Password
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-solid fa-lock"></i>
+
+                                        <input
+                                            type="password"
+                                            id="currentPassword"
+                                            placeholder="Enter current password"
+                                            required
+                                        >
+
+                                        <button
+                                            type="button"
+                                            class="eye"
+                                            data-target="currentPassword"
+                                        >
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>
+                                        New Password
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-solid fa-lock"></i>
+
+                                        <input
+                                            type="password"
+                                            id="newPassword"
+                                            placeholder="Enter new password"
+                                            required
+                                        >
+
+                                        <button
+                                            type="button"
+                                            class="eye"
+                                            data-target="newPassword"
+                                        >
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>
+                                        Confirm Password
+                                    </label>
+
+                                    <div class="input-wrapper">
+
+                                        <i class="fa-solid fa-lock"></i>
+
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            placeholder="Confirm new password"
+                                            required
+                                        >
+
+                                        <button
+                                            type="button"
+                                            class="eye"
+                                            data-target="confirmPassword"
+                                        >
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button
+                                    type="submit"
+                                    class="primary-button"
+                                >
+                                    <i class="fa-solid fa-lock"></i>
+                                    Update Password
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </section>
+
+
+
+                    <!-- NOTIFICATIONS -->
+
+                    <section class="panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Notification Preferences
+                                </h3>
+
+                                <p>
+                                    Choose how you want to be notified
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="notification-grid">
+
+
+                            <div class="notification-column">
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            Email Notifications
+                                        </strong>
+
+                                        <small>
+                                            Get notified via email
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="emailNotifications"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-bell"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            Issue Updates
+                                        </strong>
+
+                                        <small>
+                                            Status and comments
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="issueUpdates"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-rocket"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            Sprint Updates
+                                        </strong>
+
+                                        <small>
+                                            Sprint progress and changes
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="sprintUpdates"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="notification-column">
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-shield"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            System Alerts
+                                        </strong>
+
+                                        <small>
+                                            Important system notifications
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="systemAlerts"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-users"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            Team Activity
+                                        </strong>
+
+                                        <small>
+                                            Collaboration and mentions
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="teamActivity"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+
+                                <label class="notification-item">
+
+                                    <span class="notification-icon">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </span>
+
+                                    <span class="notification-text">
+
+                                        <strong>
+                                            Marketing Emails
+                                        </strong>
+
+                                        <small>
+                                            Product updates and news
+                                        </small>
+
+                                    </span>
+
+                                    <input
+                                        type="checkbox"
+                                        id="marketingEmails"
+                                    >
+
+                                    <span class="toggle"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+
+                <!-- =================================
+                     RIGHT COLUMN
+                ================================= -->
+
+                <div class="right-column">
+
+
+                    <!-- ACCOUNT INFORMATION -->
+
+                    <section class="panel account-panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Account Information
+                                </h3>
+
+                                <p>
+                                    Your current account details
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-profile">
+
+                            <div class="large-avatar">
+                                JK
+                            </div>
+
+                            <div>
+
+                                <h3 id="accountName">
+                                    Jahnavi Kota
+                                </h3>
+
+                                <p id="accountRole">
+                                    DEVELOPER
+                                </p>
+
+                                <span class="status-badge">
+                                    <span></span>
+                                    Online
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-details">
+
+                            <div class="detail-row">
+
+                                <span>
+                                    <i class="fa-regular fa-user"></i>
+                                    Username
+                                </span>
+
+                                <strong id="accountUsername">
+                                    jahnavi
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>
+                                    <i class="fa-regular fa-envelope"></i>
+                                    Email
+                                </span>
+
+                                <strong id="accountEmail">
+                                    jahnavi@example.com
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    Role
+                                </span>
+
+                                <strong id="accountRole2">
+                                    Developer
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>
+                                    <i class="fa-solid fa-users"></i>
+                                    Team
+                                </span>
+
+                                <strong id="accountTeam">
+                                    Development Team
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-row">
+
+                                <span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    Member Since
+                                </span>
+
+                                <strong id="memberSince">
+                                    Sep 1, 2025
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- APPEARANCE -->
+
+                    <section class="panel appearance-panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Appearance
+                                </h3>
+
+                                <p>
+                                    Customize your experience
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="appearance-content">
+
+                            <label>
+                                Theme
+                            </label>
+
+
+                            <div class="theme-options">
+
+                                <button
+                                    class="theme-option"
+                                    data-theme="light"
+                                >
+
+                                    <i class="fa-solid fa-sun"></i>
+
+                                    <span>
+                                        Light
+                                    </span>
+
+                                </button>
+
+
+                                <button
+                                    class="theme-option selected"
+                                    data-theme="dark"
+                                >
+
+                                    <i class="fa-solid fa-moon"></i>
+
+                                    <span>
+                                        Dark
+                                    </span>
+
+                                    <b>
+                                        <i class="fa-solid fa-check"></i>
+                                    </b>
+
+                                </button>
+
+
+                                <button
+                                    class="theme-option"
+                                    data-theme="auto"
+                                >
+
+                                    <i class="fa-solid fa-desktop"></i>
+
+                                    <span>
+                                        Auto
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+
+                            <label>
+                                Accent Color
+                            </label>
+
+
+                            <div class="accent-colors">
+
+                                <button
+                                    class="accent active"
+                                    data-color="blue"
+                                ></button>
+
+                                <button
+                                    class="accent purple"
+                                    data-color="purple"
+                                ></button>
+
+                                <button
+                                    class="accent pink"
+                                    data-color="pink"
+                                ></button>
+
+                                <button
+                                    class="accent cyan"
+                                    data-color="cyan"
+                                ></button>
+
+                                <button
+                                    class="accent green"
+                                    data-color="green"
+                                ></button>
+
+                                <button
+                                    class="accent orange"
+                                    data-color="orange"
+                                ></button>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- SYSTEM INFORMATION -->
+
+                    <section class="panel system-panel">
+
+                        <div class="panel-header">
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    System Information
+                                </h3>
+
+                                <p>
+                                    Application and environment details
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="system-details">
+
+                            <div class="system-row">
+
+                                <span>
+                                    <i class="fa-solid fa-code"></i>
+                                    Version
+                                </span>
+
+                                <strong>
+                                    v1.0.0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="system-row">
+
+                                <span>
+                                    <i class="fa-solid fa-cloud"></i>
+                                    Backend API
+                                </span>
+
+                                <strong class="connected">
+                                    <span></span>
+                                    Connected
+                                </strong>
+
+                            </div>
+
+
+                            <div class="system-row">
+
+                                <span>
+                                    <i class="fa-solid fa-database"></i>
+                                    Database
+                                </span>
+
+                                <strong class="connected">
+                                    <span></span>
+                                    Connected
+                                </strong>
+
+                            </div>
+
+
+                            <div class="system-row">
+
+                                <span>
+                                    <i class="fa-solid fa-server"></i>
+                                    Environment
+                                </span>
+
+                                <strong>
+                                    Production
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="toast" class="toast">
+    Settings updated successfully
+</div>
+
+
+<script src="/static/Settings.js"></script>
+
+</body>
+</html>

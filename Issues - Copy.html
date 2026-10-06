@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BugFlow — Issues</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+    <link rel="stylesheet" href="/static/Issues.css">
+
+    <!-- Chart.js for Issue Distribution -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div class="brand-text">
+                <div class="brand-name">
+                    Bug<span>Flow</span>
+                </div>
+
+                <div class="brand-subtitle">
+                    Issue Tracker
+                </div>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <div class="nav-title">
+                MAIN
+            </div>
+
+            <a
+                href="/IssuesDashboard"
+                class="nav-link"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="/Issues"
+                class="nav-link active"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-bug"></i></span>
+                <span>Issues</span>
+            </a>
+
+
+            <a
+                href="/IssuesBoard"
+                class="nav-link"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-list"></i></span>
+                <span>Issues Board</span>
+            </a>
+
+
+            <a
+                href="/Analytics"
+                class="nav-link"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span>
+                <span>Analytics</span>
+            </a>
+
+
+            <a
+                href="/Workflow"
+                class="nav-link"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-bolt"></i></span>
+                <span>Workflow</span>
+            </a>
+
+
+            <div class="nav-title system-title">
+                SYSTEM
+            </div>
+
+
+            <a
+                href="/Settings"
+                class="nav-link"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+                <span>Settings</span>
+            </a>
+
+
+            <button
+                id="logoutBtn"
+                class="nav-link logout"
+                type="button"
+            >
+                <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                <span>Logout</span>
+            </button>
+
+            <a href="/Dashboard" class="nav-link">
+                <span class="nav-icon"><i class="fa-solid fa-backward"></i></span>
+                <span>Back to Dashboard</span>
+            </a>
+
+        </nav>
+
+
+        <!-- USER -->
+        <div class="sidebar-user">
+
+            <div
+                class="user-avatar"
+                id="userAvatar"
+            >
+                JK
+            </div>
+
+            <div class="user-info">
+
+                <strong id="userName">
+                    Loading...
+                </strong>
+
+                <span id="userRole">
+                    ...
+                </span>
+
+                <small>
+                    <i></i>
+                    Online
+                </small>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CENTER
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOP HEADER -->
+
+        <header class="top-header">
+
+            <div class="top-search">
+
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+
+                <input
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+
+            </div>
+
+
+            <div class="header-right">
+
+                <button
+                    class="header-icon"
+                    type="button"
+                >
+                    <i class="fa-solid fa-bell"></i>
+
+                    <b>
+                        3
+                    </b>
+                </button>
+
+
+                <button
+                    id="themeButton"
+                    class="header-icon"
+                    type="button"
+                >
+                    ☾
+                </button>
+
+
+                <div class="date-range">
+
+                    <span>
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </span>
+
+                    <input
+                        id="startDate"
+                        type="date"
+                    >
+
+                    <span>–</span>
+
+                    <input
+                        id="endDate"
+                        type="date"
+                    >
+
+                    <button
+                        id="dateApply"
+                        type="button"
+                    >
+                       <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <section class="page-content">
+
+
+            <!-- PAGE HERO -->
+
+            <section class="issues-hero">
+
+                <div class="hero-left">
+
+                    <div class="hero-bug">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Issues
+                        </h1>
+
+                        <p>
+                            Track, manage and resolve your project issues.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="createIssueButton"
+                    class="create-button"
+                    type="button"
+                >
+                    <span><i class="fa-solid fa-plus"></i></span>
+                    Create Issue
+                </button>
+
+            </section>
+
+
+            <!-- =================================================
+                 FILTERS
+            ================================================== -->
+
+            <section class="filter-panel">
+
+
+                <div class="filter-search">
+
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+
+                    <input
+                        id="issueSearch"
+                        type="search"
+                        placeholder="Search issues..."
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Project
+                    </label>
+
+                    <select id="projectFilter">
+                        <option value="">
+                            All Projects
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="categoryFilter">
+                        <option value="">
+                            All Categories
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="REPORTED">
+                            Reported
+                        </option>
+
+                        <option value="TRIAGED">
+                            Triaged
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            In Progress
+                        </option>
+
+                        <option value="QA_VERIFICATION">
+                            QA Verification
+                        </option>
+
+                        <option value="RESOLVED">
+                            Resolved
+                        </option>
+
+                        <option value="CLOSED">
+                            Closed
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Priority
+                    </label>
+
+                    <select id="priorityFilter">
+
+                        <option value="">
+                            All Priorities
+                        </option>
+
+                        <option value="URGENT">
+                            Urgent
+                        </option>
+
+                        <option value="HIGH">
+                            High
+                        </option>
+
+                        <option value="MEDIUM">
+                            Medium
+                        </option>
+
+                        <option value="LOW">
+                            Low
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    id="clearFilters"
+                    class="clear-filter"
+                    type="button"
+                >
+                    <i class="fa-solid fa-xmark"></i> Clear Filters
+                </button>
+
+            </section>
+
+
+            <!-- =================================================
+                 ISSUES TABLE
+            ================================================== -->
+
+            <section class="issues-panel">
+
+
+                <div class="issues-header">
+
+                    <div class="issues-title">
+
+                        <div class="list-icon">
+                            <i class="fa-solid fa-list"></i>
+                        </div>
+
+                        <h2>
+                            All Issues
+                            <span id="issueCount">
+                                (0)
+                            </span>
+                        </h2>
+
+                    </div>
+
+
+                    <div class="pagination-top">
+
+                        <span id="pageInfo">
+                            0 - 0 of 0
+                        </span>
+
+                        <button
+                            id="previousPage"
+                            type="button"
+                            class="page-button"
+                        >
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <button
+                            id="nextPage"
+                            type="button"
+                            class="page-button"
+                        >
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="issues-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>
+                                    TITLE
+                                </th>
+
+                                <th>
+                                    PROJECT
+                                </th>
+
+                                <th>
+                                    PRIORITY
+                                </th>
+
+                                <th>
+                                    SEVERITY
+                                </th>
+
+                                <th>
+                                    STATUS
+                                </th>
+
+                                <th>
+                                    ASSIGNEE
+                                </th>
+
+                                <th>
+                                    UPDATED
+                                </th>
+
+                                <th>
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="issuesTableBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="9"
+                                    class="loading"
+                                >
+                                    Loading issues...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         RIGHT SIDEBAR
+    ====================================================== -->
+
+    <aside class="right-sidebar">
+
+
+        <!-- ISSUE SUMMARY -->
+
+        <section class="right-panel">
+
+            <div class="right-panel-title">
+
+                <span>
+                    <i class="fa-solid fa-chart-column"></i>
+                </span>
+
+                <h2>
+                    Issue Summary
+                </h2>
+
+            </div>
+
+
+            <div class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <div class="summary-icon pink">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+
+                    <strong id="summaryTotal">
+                        0
+                    </strong>
+
+                    <span>
+                        Total Issues
+                    </span>
+
+                    <small class="red">
+                        ↑ 12%
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-icon green">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <strong id="summaryResolved">
+                        0
+                    </strong>
+
+                    <span>
+                        Resolved
+                    </span>
+
+                    <small class="green-text">
+                        ↑ 25%
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-icon blue">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <strong id="summaryProgress">
+                        0
+                    </strong>
+
+                    <span>
+                        In Progress
+                    </span>
+
+                    <small class="blue-text">
+                        ↑ 20%
+                    </small>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-icon purple">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <strong id="summaryCompleted">
+                        0
+                    </strong>
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <small class="purple-text">
+                        ↑ 18%
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DISTRIBUTION
+        ================================================== -->
+
+        <section class="right-panel distribution-panel">
+
+            <div class="right-panel-title">
+
+                <span>
+                    ▷
+                </span>
+
+                <h2>
+                    Issue Distribution
+                </h2>
+
+            </div>
+
+
+            <div class="distribution-content">
+
+                <div class="donut">
+
+                    <canvas
+                        id="distributionChart"
+                    ></canvas>
+
+                    <div class="donut-center">
+
+                        <strong id="distributionTotal">
+                            0
+                        </strong>
+
+                        <span>
+                            Total
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="distributionLegend"
+                    class="distribution-legend"
+                >
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+</div>
+
+
+<!-- =========================================================
+     CREATE ISSUE MODAL
+========================================================= -->
+
+<div id="createIssueModal" class="issue-modal-overlay">
+
+    <div class="issue-modal">
+
+        <!-- MODAL HEADER -->
+        <div class="issue-modal-header">
+
+            <div class="issue-modal-title">
+
+                <div class="modal-icon">
+                    <i class="fa-solid fa-bug"></i>
+                </div>
+
+                <div>
+                    <h2>Create New Issue</h2>
+                    <p>Report a new issue to your project team.</p>
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                id="closeIssueModal"
+                class="modal-close"
+                aria-label="Close"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- MODAL BODY -->
+        <form id="createIssueForm" class="issue-modal-form">
+
+            <!-- ROW 1 -->
+            <div class="form-row">
+
+                <div class="form-field">
+
+                    <label for="createProjectId">
+                        Project
+                        <span>*</span>
+                    </label>
+
+                    <div class="input-icon">
+                        <i class="fa-solid fa-folder"></i>
+
+                        <select id="createProjectId" required>
+                            <option value="">
+                                Select Project
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="createCategoryId">
+                        Category
+                        <span>*</span>
+                    </label>
+
+                    <div class="input-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        <select id="createCategoryId" required>
+                            <option value="">
+                                Select Category
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TITLE -->
+            <div class="form-field">
+
+                <label for="createIssueTitle">
+                    Issue Title
+                    <span>*</span>
+                </label>
+
+                <div class="input-icon">
+
+                    <i class="fa-solid fa-heading"></i>
+
+                    <input
+                        id="createIssueTitle"
+                        type="text"
+                        maxlength="255"
+                        placeholder="Enter a short, descriptive issue title..."
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <div class="form-field">
+
+                <label for="createIssueDescription">
+                    Description
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="createIssueDescription"
+                    rows="4"
+                    placeholder="Describe the issue, what happened, and why it matters..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- REPRODUCTION STEPS -->
+            <div class="form-field">
+
+                <label for="createReproductionSteps">
+                    Reproduction Steps
+                </label>
+
+                <textarea
+                    id="createReproductionSteps"
+                    rows="3"
+                    placeholder="1. Open the application&#10;2. Navigate to...&#10;3. Click..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- SEVERITY / PRIORITY -->
+            <div class="form-row">
+
+                <div class="form-field">
+
+                    <label for="createSeverity">
+                        Severity
+                        <span>*</span>
+                    </label>
+
+                    <div class="input-icon severity-input">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <select id="createSeverity" required>
+
+                            <option value="">
+                                Select Severity
+                            </option>
+
+                            <option value="TRIVIAL">
+                                Trivial
+                            </option>
+
+                            <option value="MINOR">
+                                Minor
+                            </option>
+
+                            <option value="MAJOR">
+                                Major
+                            </option>
+
+                            <option value="CRITICAL">
+                                Critical
+                            </option>
+
+                            <option value="BLOCKER">
+                                Blocker
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="createPriority">
+                        Priority
+                        <span>*</span>
+                    </label>
+
+                    <div class="input-icon priority-input">
+                        <i class="fa-solid fa-flag"></i>
+
+                        <select id="createPriority" required>
+
+                            <option value="">
+                                Select Priority
+                            </option>
+
+                            <option value="LOW">
+                                Low
+                            </option>
+
+                            <option value="MEDIUM">
+                                Medium
+                            </option>
+
+                            <option value="HIGH">
+                                High
+                            </option>
+
+                            <option value="URGENT">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- AFFECTED MODULES -->
+            <div class="form-field">
+
+                <label for="createAffectedModules">
+                    Affected Modules
+                </label>
+
+                <div class="input-icon">
+
+                    <i class="fa-solid fa-cubes"></i>
+
+                    <input
+                        id="createAffectedModules"
+                        type="text"
+                        maxlength="255"
+                        placeholder="Example: Authentication, Login, API"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ENVIRONMENT -->
+            <div class="form-field">
+
+                <label for="createEnvironmentDetails">
+                    Environment Details
+                </label>
+
+                <textarea
+                    id="createEnvironmentDetails"
+                    rows="2"
+                    placeholder="Example: Windows 11, Chrome 153, PostgreSQL..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- EFFORT / ASSIGNEE / SPRINT -->
+            <div class="form-row three-columns">
+
+                <div class="form-field">
+
+                    <label for="createEstimatedEffort">
+                        Estimated Effort
+                    </label>
+
+                    <div class="input-icon">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        <input
+                            id="createEstimatedEffort"
+                            type="number"
+                            min="0"
+                            placeholder="Hours"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="createAssigneeId">
+                        Assignee
+                    </label>
+
+                    <div class="input-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        <select id="createAssigneeId">
+
+                            <option value="">
+                                Unassigned
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="createSprintId">
+                        Sprint
+                    </label>
+
+                    <div class="input-icon">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                        <select id="createSprintId">
+
+                            <option value="">
+                                No Sprint
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM MESSAGE -->
+            <div
+                id="createIssueMessage"
+                class="create-issue-message"
+            ></div>
+
+
+            <!-- FOOTER -->
+            <div class="issue-modal-footer">
+
+                <button
+                    type="button"
+                    id="cancelCreateIssue"
+                    class="modal-cancel"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    id="submitCreateIssue"
+                    class="modal-submit"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Create Issue
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+>
+</div>
+
+
+<script src="/static/Issues.js"></script>
+
+</body>
+</html>

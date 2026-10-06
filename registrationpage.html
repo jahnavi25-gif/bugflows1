@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #031241);
+            padding: 30px 15px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h1 {
+            color: #333;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .register-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d5d5d5;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .required {
+            color: #e53935;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 85px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .role-info {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .register-btn:hover {
+            background: #5568d9;
+        }
+
+        .register-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .message.success {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .message.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .register-container {
+                padding: 25px 20px;
+            }
+
+            .register-header h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-container">
+
+        <div class="register-header">
+            <h1>Create Account</h1>
+            <p>Register as a tester to access the system</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <form id="registrationForm">
+
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username">
+                    Username <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                    minlength="3"
+                    maxlength="50"
+                >
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">
+                    Email <span class="required">*</span>
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="user@example.com"
+                    required
+                >
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">
+                    Password <span class="required">*</span>
+                </label>
+
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                        minlength="6"
+                    >
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        id="showPassword"
+                    >
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="full_name">
+                    Full Name <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter your full name"
+                    required
+                    maxlength="150"
+                >
+            </div>
+
+            <!-- Role -->
+            <div class="form-group">
+                <label for="role">
+                    Role
+                </label>
+
+                <select id="role" name="role">
+                    <option value="TESTER" selected>TESTER</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="DEVELOPER">DEVELOPER</option>
+                    <option value="MANAGER">MANAGER</option>
+                    <option value="TEAM_LEAD">TEAM LEAD</option>
+                </select>
+
+                <div class="role-info">
+                    New users are registered with the selected role.
+                </div>
+            </div>
+
+            <!-- Team -->
+            <div class="form-group">
+                <label for="team">
+                    Team <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="team"
+                    name="team"
+                    placeholder="Enter your team"
+                    required
+                    maxlength="150"
+                >
+            </div>
+
+            <!-- Core Skills -->
+            <div class="form-group">
+                <label for="core_skills">
+                    Core Skills <span class="required">*</span>
+                </label>
+
+                <textarea
+                    id="core_skills"
+                    name="core_skills"
+                    placeholder="Example: Manual Testing, API Testing, Selenium, SQL, JAVA, Python"
+                    required
+                ></textarea>
+            </div>
+
+            <!-- Proficiency -->
+            <div class="form-group">
+                <label for="proficiency">
+                    Proficiency <span class="required">*</span>
+                </label>
+
+                <select id="proficiency" name="proficiency" required>
+                    <option value="">Select proficiency</option>
+                    <option value="BEGINNER">Beginner</option>
+                    <option value="INTERMEDIATE">Intermediate</option>
+                    <option value="ADVANCED">Advanced</option>
+                    <option value="EXPERT">Expert</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <button
+                type="submit"
+                class="register-btn"
+                id="registerBtn"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Already have an account?
+            <a href="/">Login</a>
+        </div>
+
+    </div>
+
+
+    <script>
+        const registrationForm = document.getElementById("registrationForm");
+        const registerBtn = document.getElementById("registerBtn");
+        const message = document.getElementById("message");
+
+        const passwordInput = document.getElementById("password");
+        const showPasswordBtn = document.getElementById("showPassword");
+
+
+        // ============================================================
+        // SHOW / HIDE PASSWORD
+        // ============================================================
+
+        showPasswordBtn.addEventListener("click", function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                showPasswordBtn.textContent = "Hide";
+
+            } else {
+
+                passwordInput.type = "password";
+                showPasswordBtn.textContent = "Show";
+
+            }
+
+        });
+
+
+        // ============================================================
+        // DISPLAY MESSAGE
+        // ============================================================
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+            message.className = "message " + type;
+
+        }
+
+
+        // ============================================================
+        // REGISTRATION
+        // ============================================================
+
+        registrationForm.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            message.className = "message";
+            message.textContent = "";
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const full_name =
+                document.getElementById("full_name").value.trim();
+
+            const role =
+                document.getElementById("role").value;
+
+            const team =
+                document.getElementById("team").value.trim();
+
+            const core_skills =
+                document.getElementById("core_skills").value.trim();
+
+            const proficiency =
+                document.getElementById("proficiency").value;
+
+
+            // ========================================================
+            // CLIENT-SIDE VALIDATION
+            // ========================================================
+
+            if (username.length < 3) {
+
+                showMessage(
+                    "Username must contain at least 3 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!email) {
+
+                showMessage(
+                    "Please enter your email address.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!full_name) {
+
+                showMessage(
+                    "Please enter your full name.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!team) {
+
+                showMessage(
+                    "Please enter your team.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!core_skills) {
+
+                showMessage(
+                    "Please enter your core skills.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!proficiency) {
+
+                showMessage(
+                    "Please select your proficiency level.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            // ========================================================
+            // REQUEST BODY
+            // ========================================================
+
+            const registrationData = {
+
+                username: username,
+
+                email: email,
+
+                password: password,
+
+                full_name: full_name,
+
+                role: role,
+
+                team: team,
+
+                core_skills: core_skills,
+
+                proficiency: proficiency
+
+            };
+
+
+            // ========================================================
+            // DISABLE BUTTON
+            // ========================================================
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = "Creating Account...";
+
+
+            try {
+
+                /*
+                 * Change this URL if your backend uses another
+                 * registration endpoint.
+                 *
+                 * Example:
+                 * /api/v1/auth/register
+                 */
+
+                const response = await fetch(
+                    "/api/v1/auth/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(registrationData)
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                // ====================================================
+                // SUCCESS
+                // ====================================================
+
+                if (response.ok) {
+
+                    showMessage(
+                        data.message ||
+                        "Registration successful! You can now login.",
+                        "success"
+                    );
+
+
+                    registrationForm.reset();
+
+
+                    /*
+                     * Optional redirect.
+                     *
+                     * Uncomment if you want automatic redirect
+                     * to the login page after registration.
+                     */
+
+                    // setTimeout(() => {
+                    //     window.location.href = "login.html";
+                    // }, 1500);
+
+                }
+
+
+                // ====================================================
+                // ERROR
+                // ====================================================
+
+                else {
+
+                    let errorMessage =
+                        "Registration failed. Please try again.";
+
+
+                    if (data.detail) {
+
+                        if (typeof data.detail === "string") {
+
+                            errorMessage = data.detail;
+
+                        } else if (Array.isArray(data.detail)) {
+
+                            errorMessage = data.detail
+                                .map(error => {
+
+                                    if (typeof error === "string") {
+                                        return error;
+                                    }
+
+                                    return error.msg || "Invalid input.";
+
+                                })
+                                .join(", ");
+
+                        }
+
+                    }
+
+
+                    showMessage(
+                        errorMessage,
+                        "error"
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+
+                showMessage(
+                    "Unable to connect to the server. Please try again.",
+                    "error"
+                );
+
+            }
+
+
+            // ========================================================
+            // ENABLE BUTTON
+            // ========================================================
+
+            registerBtn.disabled = false;
+            registerBtn.textContent = "Create Account";
+
+        });
+    </script>
+
+</body>
+</html>

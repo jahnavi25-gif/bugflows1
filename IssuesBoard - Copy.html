@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugFlow - Issues Board</title>
+
+    <link rel="stylesheet" href="/static/IssuesBoard.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-bug"></i>
+            </div>
+
+            <div>
+                <h1>Bug<span>Flow</span></h1>
+                <small>Issue Tracker</small>
+            </div>
+        </div>
+
+        <div class="menu-title">MAIN</div>
+
+        <nav class="navigation">
+
+            <a href="/IssuesDashboard" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/Issues" class="nav-item">
+                <i class="fa-solid fa-bug"></i>
+                <span>Issues</span>
+            </a>
+
+            <a href="/IssuesBoard" class="nav-item active">
+                <i class="fa-solid fa-list"></i>
+                <span>Issues Board</span>
+            </a>
+
+            <a href="/Analytics" class="nav-item">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span>Analytics</span>
+            </a>
+
+            <a href="/Workflow" class="nav-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Workflow</span>
+            </a>
+
+        </nav>
+
+        <div class="menu-title system-title">SYSTEM</div>
+
+        <nav class="navigation">
+
+            <a href="/Settings" class="nav-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="/login" class="nav-item">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </a>
+
+            <a href="/Dashboard" class="nav-item">
+                <i class="fa-solid fa-backward"></i>
+                <span>Back to Dashboard</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">JK</div>
+
+            <div>
+                <strong>Jahnavi Kota</strong>
+                <small>DEVELOPER</small>
+
+                <div class="online">
+                    <span></span>
+                    Online
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="text"
+                    id="globalSearch"
+                    placeholder="Search issues, projects, or keywords..."
+                >
+            </div>
+
+            <div class="top-actions">
+
+                <button class="icon-button">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification">3</span>
+                </button>
+
+                <button class="icon-button">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <button class="date-button">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Sep 1, 2025 - Sep 30, 2025</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- ================= HERO ================= -->
+            <section class="hero">
+
+                <div class="hero-left">
+
+                    <div class="rocket">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+
+                    <div>
+                        <h2>Sprint Board</h2>
+                        <p>Plan, track and deliver your sprint goals.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="sprint-info">
+
+                    <div class="sprint-title">
+                        Current Sprint
+                    </div>
+
+                    <div class="sprint-name">
+                        <span class="green-dot"></span>
+                        <strong id="sprintName">Sprint 5</strong>
+                    </div>
+
+                    <div class="sprint-date" id="sprintDate">
+                        Sep 1, 2026 - Sep 30, 2026
+                    </div>
+
+                    <div class="progress-row">
+                        <div class="progress">
+                            <div
+                                id="sprintProgress"
+                                class="progress-value"
+                                style="width:60%"
+                            ></div>
+                        </div>
+
+                        <span id="progressText">
+                            12 / 20 issues 60%
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="hero-actions">
+
+                    <button class="primary-button" id="createIssueBtn" onclick="window.location.href='/Issues'">
+                        <i class="fa-solid fa-plus"></i>
+                        Create Issue
+                    </button>
+
+                    <button class="secondary-button" onclick="window.location.href='/Analytics'">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        View Analytics
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= STATISTICS ================= -->
+            <section class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-list"></i>
+                    </div>
+
+                    <div>
+                        <span>Total Issues</span>
+                        <strong id="totalIssues">20</strong>
+                    </div>
+
+                    <div class="stat-change positive">
+                        <i class="fa-solid fa-arrow-up"></i>
+                        12%
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div>
+                        <span>To Do</span>
+                        <strong id="todoCount">8</strong>
+                    </div>
+
+                    <div class="stat-change">
+                        <i class="fa-solid fa-circle"></i>
+                        40%
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </div>
+
+                    <div>
+                        <span>In Progress</span>
+                        <strong id="progressCount">6</strong>
+                    </div>
+
+                    <div class="stat-change">
+                        <i class="fa-solid fa-circle"></i>
+                        30%
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Done</span>
+                        <strong id="doneCount">6</strong>
+                    </div>
+
+                    <div class="stat-change positive">
+                        <i class="fa-solid fa-circle"></i>
+                        30%
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= BOARD ================= -->
+            <section class="board">
+
+                <!-- TO DO -->
+                <div class="board-column todo">
+
+                    <div class="column-header">
+
+                        <div>
+                            <span class="column-icon">
+                                <i class="fa-solid fa-circle"></i>
+                            </span>
+
+                            <h3>To Do</h3>
+                        </div>
+
+                        <span class="column-count" id="todoHeaderCount">
+                            8
+                        </span>
+
+                    </div>
+
+                    <div id="todoIssues" class="issue-list"></div>
+
+                    <button class="show-more" data-status="todo">
+                        Show more
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- IN PROGRESS -->
+                <div class="board-column in-progress">
+
+                    <div class="column-header">
+
+                        <div>
+                            <span class="column-icon">
+                                <i class="fa-solid fa-person-running"></i>
+                            </span>
+
+                            <h3>In Progress</h3>
+                        </div>
+
+                        <span class="column-count" id="progressHeaderCount">
+                            6
+                        </span>
+
+                    </div>
+
+                    <div id="progressIssues" class="issue-list"></div>
+
+                    <button class="show-more" data-status="in_progress">
+                        Show more
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- CODE REVIEW -->
+                <div class="board-column review">
+
+                    <div class="column-header">
+
+                        <div>
+                            <span class="column-icon">
+                                <i class="fa-solid fa-code"></i>
+                            </span>
+
+                            <h3>Code Review</h3>
+                        </div>
+
+                        <span class="column-count" id="reviewHeaderCount">
+                            4
+                        </span>
+
+                    </div>
+
+                    <div id="reviewIssues" class="issue-list"></div>
+
+                    <button class="show-more" data-status="code_review">
+                        Show more
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- DONE -->
+                <div class="board-column done">
+
+                    <div class="column-header">
+
+                        <div>
+                            <span class="column-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            <h3>Done</h3>
+                        </div>
+
+                        <span class="column-count" id="doneHeaderCount">
+                            6
+                        </span>
+
+                    </div>
+
+                    <div id="doneIssues" class="issue-list"></div>
+
+                    <button class="show-more" data-status="done">
+                        Show more
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ================= CREATE ISSUE MODAL ================= -->
+
+<div id="issueModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Create Issue</h2>
+
+            <button id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="issueForm">
+
+            <label>
+                Title
+                <input
+                    type="text"
+                    id="issueTitle"
+                    required
+                    placeholder="Enter issue title"
+                >
+            </label>
+
+            <label>
+                Project
+                <select id="issueProject">
+                    <option value="Web App">Web App</option>
+                    <option value="Backend">Backend</option>
+                    <option value="API">API</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="Database">Database</option>
+                </select>
+            </label>
+
+            <label>
+                Priority
+                <select id="issuePriority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+            </label>
+
+            <label>
+                Severity
+                <select id="issueSeverity">
+                    <option value="Trivial">Trivial</option>
+                    <option value="Minor">Minor</option>
+                    <option value="Major">Major</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </label>
+
+            <label>
+                Assignee
+                <input
+                    type="text"
+                    id="issueAssignee"
+                    placeholder="Assignee name"
+                >
+            </label>
+
+            <button class="primary-button submit-button" type="submit">
+                Create Issue
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="/static/IssuesBoard.js"></script>
+
+</body>
+</html>
